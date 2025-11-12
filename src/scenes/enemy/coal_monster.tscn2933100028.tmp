@@ -1,0 +1,63 @@
+[gd_scene load_steps=9 format=3 uid="uid://liycm3ocnyf3"]
+
+[ext_resource type="Script" uid="uid://ukvu6ar45akj" path="res://scripts/coal_monster.gd" id="1_5kl1k"]
+[ext_resource type="Texture2D" uid="uid://u3mwoi66d5qy" path="res://assets/sprites/coal_monster.png" id="1_wmkj6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5kl1k"]
+atlas = ExtResource("1_wmkj6")
+region = Rect2(0, 0, 16, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3v7iv"]
+atlas = ExtResource("1_wmkj6")
+region = Rect2(16, 0, 16, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mcctr"]
+atlas = ExtResource("1_wmkj6")
+region = Rect2(32, 0, 16, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uxin0"]
+atlas = ExtResource("1_wmkj6")
+region = Rect2(48, 0, 16, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_di3yp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5kl1k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3v7iv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mcctr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uxin0")
+}],
+"loop": true,
+"name": &"run",
+"speed": 6.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5kl1k"]
+radius = 5.0
+
+[node name="CoalMonster" type="CharacterBody2D" groups=["Enemy"]]
+y_sort_enabled = true
+script = ExtResource("1_5kl1k")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_di3yp")
+animation = &"run"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_5kl1k")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_5kl1k")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

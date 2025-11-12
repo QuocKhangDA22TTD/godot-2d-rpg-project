@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://kxykv70vg2ud"]
+
+[ext_resource type="Texture2D" uid="uid://55wstqdxj33" path="res://assets/sprites/soldier.png" id="1_17qwi"]
+[ext_resource type="Script" uid="uid://bumhr5s0jlx72" path="res://scripts/soldier.gd" id="1_jd6in"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jd6in"]
+atlas = ExtResource("1_17qwi")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hep6v"]
+atlas = ExtResource("1_17qwi")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wri2k"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jd6in")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hep6v")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 4.0
+}]
+
+[node name="Soldier" type="Node2D"]
+script = ExtResource("1_jd6in")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_wri2k")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.657569
