@@ -1,5 +1,7 @@
 extends Control
 
+var timer = 0
+
 @onready var icon = $TextureRect/ItemIcon
 @onready var item_quantity = $TextureRect/ItemQuantity
 @onready var details_panel = $DetailsPanel
@@ -7,11 +9,13 @@ extends Control
 @onready var item_type = $DetailsPanel/ItemType
 @onready var item_effect = $DetailsPanel/ItemEffect
 @onready var usage_panel = $UsagePanel
-@onready var use_button = $UsagePanel/TextureRect/VBoxContainer/UseButton
+@onready var use_button = $UsagePanel/TextureRect/VBoxContainer/TextureUseButton
 
 var item = null
 
 func _on_item_button_pressed() -> void:
+	timer += 1
+	print(timer)
 	if item != null:
 		usage_panel.visible = !usage_panel.visible
 		#Global.usage_panel_signal.emit()

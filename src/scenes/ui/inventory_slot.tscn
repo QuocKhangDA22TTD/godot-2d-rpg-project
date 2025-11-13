@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://byn05ifcf08j0"]
+[gd_scene load_steps=24 format=3 uid="uid://byn05ifcf08j0"]
 
 [ext_resource type="Script" uid="uid://cl6va5r1rwfhc" path="res://scripts/inventory_slot.gd" id="1_kscix"]
 [ext_resource type="Texture2D" uid="uid://b505or0e1jjpi" path="res://assets/ui/ui.png" id="2_ru537"]
@@ -29,6 +29,30 @@ region = Rect2(256, 64, 192, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_hytmx"]
 atlas = ExtResource("2_ru537")
 region = Rect2(256, 64, 192, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gd4e4"]
+atlas = ExtResource("2_ru537")
+region = Rect2(256, 128, 128, 32)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bswxb"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v55gw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vx73v"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_adagh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bxf2p"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wmsr3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_onxkp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oo8lb"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3p6w8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o0n8h"]
 
 [node name="InventorySlot" type="Control"]
 layout_mode = 3
@@ -120,10 +144,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -96.0
-offset_top = -36.0
-offset_right = 96.0
-offset_bottom = 36.0
+offset_left = -95.5
+offset_top = -59.5
+offset_right = 96.5
+offset_bottom = 36.5
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("AtlasTexture_hytmx")
@@ -142,22 +166,55 @@ offset_bottom = 21.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="UseButton" type="Button" parent="UsagePanel/TextureRect/VBoxContainer"]
+[node name="TextureDropButton" type="TextureRect" parent="UsagePanel/TextureRect/VBoxContainer"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_gd4e4")
+
+[node name="DropButton" type="Button" parent="UsagePanel/TextureRect/VBoxContainer/TextureDropButton"]
 z_index = 1
 layout_mode = 2
+offset_left = 4.0
+offset_top = 3.0
+offset_right = 161.0
+offset_bottom = 28.0
 size_flags_vertical = 4
 mouse_filter = 1
 theme_override_font_sizes/font_size = 7
+theme_override_styles/focus = SubResource("StyleBoxEmpty_bswxb")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_v55gw")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_vx73v")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_adagh")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_bxf2p")
+text = "Bỏ đi"
+
+[node name="TextureUseButton" type="TextureRect" parent="UsagePanel/TextureRect/VBoxContainer"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_gd4e4")
+
+[node name="UseButton" type="Button" parent="UsagePanel/TextureRect/VBoxContainer/TextureUseButton"]
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.5
+offset_top = -12.0
+offset_right = 75.5
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+mouse_filter = 1
+theme_override_font_sizes/font_size = 7
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wmsr3")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_onxkp")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_oo8lb")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3p6w8")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_o0n8h")
 text = "Sử dụng
 "
-
-[node name="DropButton" type="Button" parent="UsagePanel/TextureRect/VBoxContainer"]
-z_index = 1
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 1
-theme_override_font_sizes/font_size = 7
-text = "Bỏ đi"
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="mouse_entered" from="ItemButton" to="." method="_on_item_button_mouse_entered"]
@@ -165,5 +222,5 @@ text = "Bỏ đi"
 [connection signal="pressed" from="ItemButton" to="." method="_on_item_button_pressed"]
 [connection signal="mouse_entered" from="UsagePanel/TextureRect" to="." method="_on_texture_rect_mouse_entered"]
 [connection signal="mouse_exited" from="UsagePanel/TextureRect" to="." method="_on_texture_rect_mouse_exited"]
-[connection signal="pressed" from="UsagePanel/TextureRect/VBoxContainer/UseButton" to="." method="_on_use_button_pressed"]
-[connection signal="pressed" from="UsagePanel/TextureRect/VBoxContainer/DropButton" to="." method="_on_drop_button_pressed"]
+[connection signal="pressed" from="UsagePanel/TextureRect/VBoxContainer/TextureDropButton/DropButton" to="." method="_on_drop_button_pressed"]
+[connection signal="pressed" from="UsagePanel/TextureRect/VBoxContainer/TextureUseButton/UseButton" to="." method="_on_use_button_pressed"]

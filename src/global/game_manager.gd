@@ -4,6 +4,8 @@ var player_scene = preload("res://scenes/player/player.tscn")
 var player = null
 var game_over = false
 
+var save_path = "user://savegame.save"
+
 func spawn_player(map: Node):
 	if player == null or not player.is_inside_tree():
 		if player != null:
@@ -25,7 +27,7 @@ func save_player_positon():
 		"scene": Global.player.get_tree().current_scene.scene_file_path
 	}
 	
-	var file = FileAccess.open("res://data/savegame.save", FileAccess.WRITE)
+	var file = FileAccess.open("user://savegame.save", FileAccess.WRITE)
 	
 	if file:
 		var json_data = JSON.stringify(data)
@@ -35,11 +37,15 @@ func save_player_positon():
 	print("luu that bai")
 
 func load_game():
-	if not FileAccess.file_exists("res://data/savegame.save"):
-		print("khong co file")
-		return
+	if not FileAccess.file_exists(save_path):
+		var default_data = {
+			"scene": "res://scenes/map/main_map.tscn",
+			"x": 200.0,
+			"y": 200.0
+		}
+		save_game(default_data)
 	
-	var file = FileAccess.open("res://data/savegame.save", FileAccess.READ)
+	var file = FileAccess.open("user://savegame.save", FileAccess.READ)
 	var content = file.get_as_text()
 	file.close()
 	
@@ -49,3 +55,9 @@ func load_game():
 
 func _on_player_died():
 	game_over = true
+
+func save_game(data):
+	var json = JSON.stringify(data)
+	var file = FileAccess.open("user://savegame.save", FileAccess.WRITE)
+	file.store_string(json)
+	file.close()
