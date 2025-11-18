@@ -25,7 +25,7 @@ animations = [{
 "speed": 4.0
 }]
 
-[node name="Soldier" type="Node2D"]
+[node name="Soldier" type="Node2D" groups=["NPC"]]
 script = ExtResource("1_jd6in")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

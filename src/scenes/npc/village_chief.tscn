@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://bvwgbjhgmkdf7"]
+
+[ext_resource type="Script" uid="uid://uou68lvjai4b" path="res://scripts/village_chief.gd" id="1_5bpvd"]
+[ext_resource type="Texture2D" uid="uid://day1iyy4qoyc0" path="res://assets/sprites/village_chief_idle.png" id="1_81wfd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5bpvd"]
+atlas = ExtResource("1_81wfd")
+region = Rect2(0, 0, 16, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jrs3d"]
+atlas = ExtResource("1_81wfd")
+region = Rect2(16, 0, 16, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wx13w"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5bpvd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jrs3d")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 4.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t4g58"]
+radius = 3.0
+
+[node name="VillageChief" type="CharacterBody2D" groups=["NPC"]]
+collision_layer = 5
+script = ExtResource("1_5bpvd")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_wx13w")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.238371
+offset = Vector2(0, -9)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_t4g58")

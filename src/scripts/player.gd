@@ -1,18 +1,20 @@
 extends CharacterBody2D
 
 var speed = 60.0
-var health = 3.0
+var health = 5.0
+var max_health = 5.0
 
-var is_open_inventory = false
+#var is_open_inventory = false # Để đây một thời gian xem có chuyện gì xảy ra không, nếu không có thì bỏ dòng này
+var is_talk = true
 
 @onready var anima = $AnimatedSprite2D
 @onready var colli = $CollisionShape2D
 @onready var weapon = $Weapon
-@onready var health_label = $PlayerStatusUI/Control/HeatlhLabel
+@onready var health_label = $HUD/HeatlhLabel
 @onready var anim_player = $AnimatedSprite2D/AnimationPlayer
 @onready var inventory_ui = $InventoryUI
 @onready var interact_ui = $InteracUI
-#@onready var usage_panel_ui = $InventoryUI/UsagePanel
+@onready var ray_cast_2d = $RayCast2D
 
 signal died
 
@@ -25,11 +27,11 @@ func _ready():
 		load_position(data)
 		
 	Global.player = self
+	Global.player.health = data["health"]
 	anim_player.play("RESET")
 	anima.play("idle")
 	Global.facing = false
 	health_label.text = "Máu: " + str(health)
-	#Global.usage_panel_signal.connect(_on_usage_panel_signal)
 
 func _physics_process(delta: float) -> void:
 	if GameManager.game_over:
@@ -41,10 +43,13 @@ func _physics_process(delta: float) -> void:
 	if get_tree().paused:
 		anima.pause()
 		return
+		
 	player_movement()
 	player_animation()
-	#show_info()
 	move_and_slide()
+	
+	if velocity != Vector2.ZERO:
+		ray_cast_2d.target_position = velocity.normalized() * 15
 
 func player_movement():
 	var hor = Input.get_action_strength("right") - Input.get_action_strength("left")
@@ -101,16 +106,20 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("inventory") and !PauseMenu.visible:
 		inventory_ui.visible = !inventory_ui.visible
 		Global.inventory_updated.emit()
-		#if !inventory_ui.visible:
-			#usage_panel_ui.visible = false
 		get_tree().paused = !get_tree().paused
-
-func _on_usage_panel_signal():
-	pass
-	#usage_panel_ui.visible = !usage_panel_ui.visible
+		
+	if is_talk:
+		if event.is_action_pressed("talk"):
+			var target = ray_cast_2d.get_collider()
+			if target != null:
+				if target.is_in_group("NPC"):
+					print("xin chào trưởng làng")
+					target.start_dialog()
+				elif target.is_in_group("Items"):
+					print("Tôi vừa nhặt " + target.get_parent().item_name)
 
 func apply_item_effect (item):
 	match item["item_effect"]:
 		"Hồi máu":
-			if health < 10:
-				health += 4
+			health += 3
+			health = clamp(health, 0, max_health)

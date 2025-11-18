@@ -77,3 +77,13 @@ func _on_visibility_changed() -> void:
 	if !visible:
 		details_panel.visible = false
 		usage_panel.visible = false
+
+func _input(event: InputEvent):
+	if event.is_action_pressed("esc"):
+		usage_panel.visible = false
+
+# Đang thử nghiệm
+func _on_item_button_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_RIGHT:
+			print("xin chào")
