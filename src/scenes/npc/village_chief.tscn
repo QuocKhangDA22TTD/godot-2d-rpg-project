@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://bvwgbjhgmkdf7"]
+[gd_scene load_steps=8 format=3 uid="uid://bvwgbjhgmkdf7"]
 
 [ext_resource type="Script" uid="uid://uou68lvjai4b" path="res://scripts/village_chief.gd" id="1_5bpvd"]
 [ext_resource type="Texture2D" uid="uid://day1iyy4qoyc0" path="res://assets/sprites/village_chief_idle.png" id="1_81wfd"]
+[ext_resource type="PackedScene" uid="uid://5hln4k6bnr5o" path="res://scenes/entity/dialog_manager.tscn" id="3_jrs3d"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5bpvd"]
 atlas = ExtResource("1_81wfd")
@@ -31,6 +32,8 @@ radius = 3.0
 [node name="VillageChief" type="CharacterBody2D" groups=["NPC"]]
 collision_layer = 5
 script = ExtResource("1_5bpvd")
+npc_id = "trưởng làng"
+npc_name = "Trưởng làng"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_wx13w")
@@ -41,3 +44,5 @@ offset = Vector2(0, -9)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_t4g58")
+
+[node name="DialogManager" parent="." instance=ExtResource("3_jrs3d")]

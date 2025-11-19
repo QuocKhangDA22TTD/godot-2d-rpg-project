@@ -8,7 +8,7 @@ func _ready():
 	visible = false
 
 func _input(event: InputEvent) -> void:
-	if get_tree().paused:
+	if get_tree().paused or Global.player.can_move == false:
 		return
 	if event.is_action_pressed("slash"):
 		if not anim_player.is_playing() or anim_player.current_animation != "slash_left":

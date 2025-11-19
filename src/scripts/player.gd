@@ -5,7 +5,7 @@ var health = 5.0
 var max_health = 5.0
 
 #var is_open_inventory = false # Để đây một thời gian xem có chuyện gì xảy ra không, nếu không có thì bỏ dòng này
-var is_talk = true
+var can_move = true
 
 @onready var anima = $AnimatedSprite2D
 @onready var colli = $CollisionShape2D
@@ -27,7 +27,7 @@ func _ready():
 		load_position(data)
 		
 	Global.player = self
-	Global.player.health = data["health"]
+	#Global.player.health = data["health"]
 	anim_player.play("RESET")
 	anima.play("idle")
 	Global.facing = false
@@ -43,13 +43,13 @@ func _physics_process(delta: float) -> void:
 	if get_tree().paused:
 		anima.pause()
 		return
+	if can_move:
+		player_movement()
+		player_animation()
+		move_and_slide()
 		
-	player_movement()
-	player_animation()
-	move_and_slide()
-	
-	if velocity != Vector2.ZERO:
-		ray_cast_2d.target_position = velocity.normalized() * 15
+		if velocity != Vector2.ZERO:
+			ray_cast_2d.target_position = velocity.normalized() * 15
 
 func player_movement():
 	var hor = Input.get_action_strength("right") - Input.get_action_strength("left")
@@ -108,12 +108,13 @@ func _input(event: InputEvent) -> void:
 		Global.inventory_updated.emit()
 		get_tree().paused = !get_tree().paused
 		
-	if is_talk:
+	if can_move:
 		if event.is_action_pressed("talk"):
 			var target = ray_cast_2d.get_collider()
 			if target != null:
 				if target.is_in_group("NPC"):
 					print("xin chào trưởng làng")
+					can_move = false
 					target.start_dialog()
 				elif target.is_in_group("Items"):
 					print("Tôi vừa nhặt " + target.get_parent().item_name)

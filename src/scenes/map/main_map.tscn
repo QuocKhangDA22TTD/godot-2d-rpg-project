@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=4 uid="uid://b56eep5gwc6qs"]
+[gd_scene load_steps=33 format=4 uid="uid://b56eep5gwc6qs"]
 
 [ext_resource type="Texture2D" uid="uid://bq2pg8sd2yng7" path="res://assets/tilesheets/tilesheet.png" id="1_0gcij"]
 [ext_resource type="Script" uid="uid://xc34wxp0w7ok" path="res://scripts/main_map.gd" id="1_joqnj"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://d4bns3h0te7qu" path="res://scenes/entity/inventory_item.tscn" id="7_tp1qk"]
 [ext_resource type="Texture2D" uid="uid://dcj5vu84onw8c" path="res://assets/sprites/items.png" id="8_vrayl"]
 [ext_resource type="PackedScene" uid="uid://bvwgbjhgmkdf7" path="res://scenes/npc/village_chief.tscn" id="9_vrayl"]
+[ext_resource type="Script" uid="uid://c2co2qs2lreh0" path="res://resources/dialog/dialog.gd" id="10_k7m4y"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3f3oo"]
 shader = ExtResource("1_tm01x")
@@ -248,6 +249,11 @@ region = Rect2(24, 0, 24, 24)
 atlas = ExtResource("8_vrayl")
 region = Rect2(0, 0, 24, 24)
 
+[sub_resource type="Resource" id="Resource_mwyg5"]
+script = ExtResource("10_k7m4y")
+dialogs = {}
+metadata/_custom_type_script = "uid://c2co2qs2lreh0"
+
 [node name="MainMap" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_joqnj")
@@ -336,7 +342,7 @@ item_name = "Than đá"
 item_texture = SubResource("AtlasTexture_k7m4y")
 
 [node name="InventoryItem2" parent="." instance=ExtResource("7_tp1qk")]
-position = Vector2(1504, 760)
+position = Vector2(1432, 712)
 item_type = "Tiêu hao"
 item_name = "Bình máu"
 item_texture = SubResource("AtlasTexture_mwyg5")
@@ -344,6 +350,7 @@ item_effect = "Hồi máu"
 
 [node name="VillageChief" parent="." instance=ExtResource("9_vrayl")]
 position = Vector2(1432, 712)
+dialog_resource = SubResource("Resource_mwyg5")
 
 [editable path="Doors/Door_Village"]
 [editable path="Doors/Door_Start"]

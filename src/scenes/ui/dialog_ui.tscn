@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dfyt2gwxrlywa"]
+[gd_scene load_steps=10 format=3 uid="uid://dfyt2gwxrlywa"]
 
 [ext_resource type="Script" uid="uid://bmwtmgatu4nhi" path="res://scripts/dialog_ui.gd" id="1_sx8pb"]
 [ext_resource type="Texture2D" uid="uid://b505or0e1jjpi" path="res://assets/ui/ui.png" id="1_w1osw"]
@@ -9,6 +9,16 @@ region = Rect2(32, 192, 320, 96)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w1osw"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sx8pb"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_im446"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wnqno"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7v7f6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o7ro2"]
+
 [node name="DialogUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -18,21 +28,22 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_sx8pb")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 1
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -160.0
-offset_top = -96.0
+offset_top = -118.0
 offset_right = 160.0
 grow_horizontal = 2
 grow_vertical = 0
 texture = SubResource("AtlasTexture_sx8pb")
 
-[node name="Panel" type="Panel" parent="TextureRect"]
+[node name="Panel" type="Panel" parent="CanvasLayer/TextureRect"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -41,7 +52,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_w1osw")
 
-[node name="DialogBox" type="VBoxContainer" parent="TextureRect/Panel"]
+[node name="DialogBox" type="VBoxContainer" parent="CanvasLayer/TextureRect/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -52,38 +63,45 @@ offset_right = -10.0
 offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 0
+theme_override_constants/separation = 15
 
-[node name="DialogSpeaker" type="Label" parent="TextureRect/Panel/DialogBox"]
+[node name="DialogSpeaker" type="Label" parent="CanvasLayer/TextureRect/Panel/DialogBox"]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 10
 text = "Trưởng làng"
 
-[node name="DialogText" type="Label" parent="TextureRect/Panel/DialogBox"]
+[node name="DialogText" type="Label" parent="CanvasLayer/TextureRect/Panel/DialogBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 8
 text = "Xin chào bạn, tôi là trưởng làng, người thay mặt  đại diện cho toàn bộ các hoạt động của ngồi làng này"
 horizontal_alignment = 1
 vertical_alignment = 1
-autowrap_mode = 3
+autowrap_mode = 2
 
-[node name="DialogOptions" type="HBoxContainer" parent="TextureRect/Panel/DialogBox"]
+[node name="DialogOptions" type="HBoxContainer" parent="CanvasLayer/TextureRect/Panel/DialogBox"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_constants/separation = 15
+size_flags_vertical = 8
+theme_override_constants/separation = 5
 
-[node name="Button" type="Button" parent="TextureRect/Panel/DialogBox/DialogOptions"]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
-theme_override_font_sizes/font_size = 4
-text = "Đồng ý"
+[node name="CloseButton" type="Button" parent="CanvasLayer/TextureRect/Panel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -10.0
+offset_top = -6.0
+offset_right = 6.0
+offset_bottom = 8.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 10
+theme_override_styles/focus = SubResource("StyleBoxEmpty_sx8pb")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_im446")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_wnqno")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_7v7f6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_o7ro2")
+text = "X"
 
-[node name="Button2" type="Button" parent="TextureRect/Panel/DialogBox/DialogOptions"]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
-theme_override_font_sizes/font_size = 4
-text = "Từ chối"
+[connection signal="pressed" from="CanvasLayer/TextureRect/Panel/CloseButton" to="." method="_on_close_button_pressed"]

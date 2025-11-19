@@ -1,0 +1,31 @@
+{
+	"trưởng làng": {
+		"trees": [
+			{
+				"branch_id": "chương 1",
+				"dialogs": [
+					{
+						"state": "start",
+						"text": "Chào mừng cậu đến với ngôi làng của chúng tôi, cậu chắc hẳn mạo hiểm giả đã nghe về tin đồn của ngồi làng mà đến đây đúng không.",
+						"options": {
+							"Tôi đang vội hẹn ông sau": "exit",
+							"Tôi đang cần tìm nhà trọ, ông có biết chỗ có nhà trọ không?": "in_progress",
+						}
+					},
+					{
+						"state": "in_progress",
+						"text": "Cậu có thể đến gặp và hỏi trực tiếp ngài hội trưởng hội mạo hiểm giả ở ngôi làng này ,anh ây tên là Tiết, giờ này anh ấy đang ở tòa nhà hội mạo hiểm.",
+						"options": {
+							"Cám ơn trưởng làng": "exit",
+						}
+					},
+					{
+						"state": "exit",
+						"text": "Được rồi, vậy hẹn gặp cậu sau.",
+						"options": {}
+					},
+				],
+			},
+		],
+	},
+}
