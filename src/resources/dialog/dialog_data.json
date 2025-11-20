@@ -28,4 +28,62 @@
 			},
 		],
 	},
+	"hội trưởng": {
+		"trees": [
+			{
+				"branch_id": "chương 1",
+				"dialogs": [
+					{
+						"state": "start",
+						"text": "Chào cậu, cậu định hỏi gì à?.",
+						"options": {
+							"Không có gì": "exit",
+							"Tôi đang cần tìm nhà trọ": "in_progress",
+						}
+					},
+					{
+						"state": "in_progress",
+						"text": "Nếu là tìm nhà trọ thì chỗ tôi còn dư một phòng, cậu có thể đến đó để ở.",
+						"options": {
+							"Cám ơn hội trưởng": "exit",
+						}
+					},
+					{
+						"state": "exit",
+						"text": "Được rồi, vậy hẹn gặp cậu sau.",
+						"options": {}
+					},
+				],
+			},
+		],
+	},
+	"người bán hàng": {
+		"trees": [
+			{
+				"branch_id": "chương 1",
+				"dialogs": [
+					{
+						"state": "start",
+						"text": "Chào cậu, cậu muốn mua gì phải không?.",
+						"options": {
+							"Không": "exit",
+							"Tôi đang cần một chai thuốc hồi máu": "in_progress",
+						}
+					},
+					{
+						"state": "in_progress",
+						"text": "tiếc quá tôi hết thuốc hồi máu rồi.",
+						"options": {
+							"vậy thôi, lần sau tôi ghé tiếp.": "exit",
+						}
+					},
+					{
+						"state": "exit",
+						"text": "Được rồi, vậy hẹn gặp cậu sau.",
+						"options": {}
+					},
+				],
+			},
+		],
+	},
 }

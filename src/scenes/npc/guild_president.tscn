@@ -1,0 +1,53 @@
+[gd_scene load_steps=10 format=3 uid="uid://byceli8qr3yje"]
+
+[ext_resource type="Script" uid="uid://uou68lvjai4b" path="res://scripts/village_chief.gd" id="1_665ow"]
+[ext_resource type="Script" uid="uid://c2co2qs2lreh0" path="res://resources/dialog/dialog.gd" id="2_vcf78"]
+[ext_resource type="PackedScene" uid="uid://5hln4k6bnr5o" path="res://scenes/entity/dialog_manager.tscn" id="3_apba8"]
+[ext_resource type="Texture2D" uid="uid://ct5ycbylk122g" path="res://assets/sprites/guld_president_idle.png" id="3_vcf78"]
+
+[sub_resource type="Resource" id="Resource_apba8"]
+script = ExtResource("2_vcf78")
+dialogs = {}
+metadata/_custom_type_script = "uid://c2co2qs2lreh0"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_apba8"]
+atlas = ExtResource("3_vcf78")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_31182"]
+atlas = ExtResource("3_vcf78")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_31182"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_apba8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_31182")
+}],
+"loop": true,
+"name": &"default",
+"speed": 4.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t4g58"]
+radius = 3.0
+
+[node name="GuildPresident" type="CharacterBody2D" groups=["NPC"]]
+collision_layer = 5
+script = ExtResource("1_665ow")
+npc_id = "hội trưởng"
+npc_name = "Hội trưởng hội mạo hiểm giả"
+dialog_resource = SubResource("Resource_apba8")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_31182")
+autoplay = "default"
+offset = Vector2(0, -8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_t4g58")
+
+[node name="DialogManager" parent="." instance=ExtResource("3_apba8")]

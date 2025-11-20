@@ -40,8 +40,8 @@ func load_game():
 	if not FileAccess.file_exists(save_path):
 		var default_data = {
 			"scene": "res://scenes/map/main_map.tscn",
-			"x": 200.0,
-			"y": 200.0
+			"x": 808.0,
+			"y": 24.0
 		}
 		save_game(default_data)
 	

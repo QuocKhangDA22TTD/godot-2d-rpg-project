@@ -143,6 +143,7 @@ rotation_smoothing_speed = 25.0
 shape = SubResource("CircleShape2D_gmlin")
 
 [node name="Weapon" type="Node2D" parent="."]
+visible = false
 
 [node name="Sword" parent="Weapon" instance=ExtResource("4_lvxji")]
 
@@ -161,7 +162,6 @@ size_flags_horizontal = 0
 text = "Tiền: 0 đồng"
 
 [node name="HealthBar" parent="HUD" instance=ExtResource("5_0owmy")]
-visible = false
 
 [node name="InventoryUI" type="CanvasLayer" parent="."]
 visible = false
