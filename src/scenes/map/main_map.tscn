@@ -365,6 +365,14 @@ position = Vector2(0, -48)
 [node name="Spawn" parent="Doors/Door_Start" index="1"]
 position = Vector2(0, 24)
 
+[node name="Door_OutDoor" parent="Doors" instance=ExtResource("6_tm01x")]
+position = Vector2(936, 250)
+destination_level_tag = "in_door"
+destiation_door_tag = "Indoor"
+
+[node name="Spawn" parent="Doors/Door_OutDoor" index="1"]
+position = Vector2(1, 25)
+
 [node name="InventoryItem" parent="." instance=ExtResource("7_tp1qk")]
 position = Vector2(1536, 752)
 item_type = "Vật liệu"
@@ -386,13 +394,8 @@ dialog_resource = SubResource("Resource_mwyg5")
 position = Vector2(1040, 568)
 
 [node name="Seller" parent="." instance=ExtResource("12_6im03")]
-position = Vector2(1044, 1119)
-
-[node name="Seller2" parent="." instance=ExtResource("12_6im03")]
-position = Vector2(954, 1083)
-
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.137653, 0.137531, 0.307272, 1)
+position = Vector2(1017, 1083)
 
 [editable path="Doors/Door_Village"]
 [editable path="Doors/Door_Start"]
+[editable path="Doors/Door_OutDoor"]

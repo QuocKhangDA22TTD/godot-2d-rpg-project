@@ -69,13 +69,13 @@ theme_override_constants/separation = 15
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 10
-text = "Trưởng làng"
+text = "Tên NPC"
 
 [node name="DialogText" type="Label" parent="CanvasLayer/TextureRect/Panel/DialogBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 8
-text = "Xin chào bạn, tôi là trưởng làng, người thay mặt  đại diện cho toàn bộ các hoạt động của ngồi làng này"
+text = "Lời thoại của NPC"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
