@@ -68,7 +68,7 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAPAAcAAAAAAAEAAAAPAAgAAAAAAAIAAAAPAAk
 tile_set = SubResource("TileSet_cbpyt")
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="TileMap"]
-tile_map_data = PackedByteArray("AAAJABgAAAAQAAUAAAAIABcAAAATAAQAAAAHABkAAAAAAAQAAAAEABsAAAAMAAYAAAAJACAAAAATAAYAAAA=")
+tile_map_data = PackedByteArray("AAAHABkAAAAAAAQAAAAJACAAAAATAAYAAAAJABcAAAAQAAUAAAAIABcAAAATAAQAAAA=")
 tile_set = SubResource("TileSet_o0tt6")
 
 [node name="Doors" type="Node" parent="."]

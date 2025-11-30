@@ -15,6 +15,7 @@ var can_move = true
 @onready var inventory_ui = $InventoryUI
 @onready var interact_ui = $InteracUI
 @onready var ray_cast_2d = $RayCast2D
+@onready var quest_manager = $QuestManager
 
 signal died
 
@@ -26,7 +27,7 @@ func _ready():
 	else:
 		load_position(data)
 		
-	Global.player = self
+	Global.player = GameManager.player
 	#Global.player.health = data["health"]
 	anim_player.play("RESET")
 	anima.play("idle")
@@ -91,10 +92,10 @@ func _on_spawn(position: Vector2):
 func take_damaged(amount):
 	if health <= 0:
 		return
-		
+	
 	if anim_player.current_animation == "hit":
 		return
-		
+	
 	health -= amount
 	anim_player.play("hit")
 	change_health_label()
@@ -118,6 +119,9 @@ func _input(event: InputEvent) -> void:
 					target.start_dialog()
 				elif target.is_in_group("Items"):
 					print("Tôi vừa nhặt " + target.get_parent().item_name)
+	
+	if event.is_action_pressed("quest"):
+		quest_manager.show_hide_log()
 
 func apply_item_effect (item):
 	match item["item_effect"]:

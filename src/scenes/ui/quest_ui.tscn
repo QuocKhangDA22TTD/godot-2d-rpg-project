@@ -17,7 +17,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_0nwrp")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backgrounds" type="HBoxContainer" parent="CanvasLayer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -25,64 +34,62 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Backgrounds" type="HBoxContainer" parent="Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="BG_1" type="Panel" parent="Panel/Backgrounds"]
+[node name="BG_1" type="Panel" parent="CanvasLayer/Panel/Backgrounds"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_f2337")
 
-[node name="BG_2" type="Panel" parent="Panel/Backgrounds"]
+[node name="BG_2" type="Panel" parent="CanvasLayer/Panel/Backgrounds"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_0nwrp")
 
-[node name="Contents" type="VBoxContainer" parent="Panel"]
+[node name="Contents" type="VBoxContainer" parent="CanvasLayer/Panel"]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 10
 anchor_right = 1.0
-anchor_bottom = 1.0
+offset_bottom = 85.0
 grow_horizontal = 2
-grow_vertical = 2
 
-[node name="Headings" type="HBoxContainer" parent="Panel/Contents"]
+[node name="Headings" type="HBoxContainer" parent="CanvasLayer/Panel/Contents"]
 layout_mode = 2
 size_flags_vertical = 2
 alignment = 1
 
-[node name="Lists" type="Label" parent="Panel/Contents/Headings"]
+[node name="Lists" type="Label" parent="CanvasLayer/Panel/Contents/Headings"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Danh sách nhiện vụ"
+horizontal_alignment = 1
 
-[node name="Details" type="Label" parent="Panel/Contents/Headings"]
+[node name="Details" type="Label" parent="CanvasLayer/Panel/Contents/Headings"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Chi tiết nhiệm vụ"
+horizontal_alignment = 1
 
-[node name="Details" type="HBoxContainer" parent="Panel/Contents"]
+[node name="Details" type="HBoxContainer" parent="CanvasLayer/Panel/Contents"]
 layout_mode = 2
 
-[node name="QuestList" type="VBoxContainer" parent="Panel/Contents/Details"]
+[node name="QuestList" type="VBoxContainer" parent="CanvasLayer/Panel/Contents/Details"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="QuestDetail" type="VBoxContainer" parent="CanvasLayer/Panel/Contents/Details"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="QuestTitle" type="Label" parent="CanvasLayer/Panel/Contents/Details/QuestDetail"]
+layout_mode = 2
+text = "Đánh quái"
+
+[node name="QuestDescription" type="Label" parent="CanvasLayer/Panel/Contents/Details/QuestDetail"]
+layout_mode = 2
+text = "Tiêu diệt 10 con quái
+than trong hầm mỏ"
+
+[node name="QuestObjectives" type="VBoxContainer" parent="CanvasLayer/Panel/Contents/Details/QuestDetail"]
 layout_mode = 2
 
-[node name="QuestDetail" type="VBoxContainer" parent="Panel/Contents/Details"]
-layout_mode = 2
-
-[node name="QuestTitle" type="Label" parent="Panel/Contents/Details/QuestDetail"]
-layout_mode = 2
-
-[node name="QuestDescription" type="Label" parent="Panel/Contents/Details/QuestDetail"]
-layout_mode = 2
-
-[node name="QuestObjectives" type="VBoxContainer" parent="Panel/Contents/Details/QuestDetail"]
-layout_mode = 2
-
-[node name="QuestRewards" type="VBoxContainer" parent="Panel/Contents/Details/QuestDetail"]
+[node name="QuestRewards" type="VBoxContainer" parent="CanvasLayer/Panel/Contents/Details/QuestDetail"]
 layout_mode = 2

@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://bvwgbjhgmkdf7"]
 
-[ext_resource type="Script" uid="uid://uou68lvjai4b" path="res://scripts/village_chief.gd" id="1_5bpvd"]
+[ext_resource type="Script" uid="uid://uou68lvjai4b" path="res://scripts/npc.gd" id="1_5bpvd"]
 [ext_resource type="Texture2D" uid="uid://byovby8nikpkf" path="res://assets/sprites/village_chief_idle.png" id="1_81wfd"]
 [ext_resource type="PackedScene" uid="uid://5hln4k6bnr5o" path="res://scenes/entity/dialog_manager.tscn" id="3_jrs3d"]
 

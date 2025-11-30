@@ -60,8 +60,12 @@ func get_damaged(amount: float):
 func chase_player():
 	if Global.player:
 		var dir = Vector2(Global.player.global_position - global_position)
+		var distance = global_position.distance_to(Global.player.global_position)
 		
-		velocity = dir.normalized() * speed
+		if distance >= attack_range:
+			velocity = dir.normalized() * speed
+		else:
+			velocity = Vector2(randf_range(-2, 2), randf_range(-2, 2))
 
 func dash_to_player():
 	var dir = (Global.player.global_position - global_position).normalized()

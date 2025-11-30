@@ -9,6 +9,7 @@
 						"text": "Chào mừng cậu đến với ngôi làng của chúng tôi, cậu chắc hẳn mạo hiểm giả đã nghe về tin đồn của ngồi làng mà đến đây đúng không.",
 						"options": {
 							"Tôi đang vội hẹn ông sau": "exit",
+							"Ông có việc gì cho tôi làm không": "give_quest",
 							"Tôi đang cần tìm nhà trọ, ông có biết chỗ có nhà trọ không?": "in_progress",
 						}
 					},
@@ -16,7 +17,54 @@
 						"state": "in_progress",
 						"text": "Cậu có thể đến gặp và hỏi trực tiếp ngài hội trưởng hội mạo hiểm giả ở ngôi làng này ,anh ây tên là Tiết, giờ này anh ấy đang ở tòa nhà hội mạo hiểm.",
 						"options": {
-							"Cám ơn trưởng làng": "exit",
+							"Cám ơn trưởng làng": "end",
+						}
+					},
+					{
+						"state": "give_quest",
+						"text": "Tôi đang cần 2 cục than.",
+						"options": {
+							"Đồng ý.": "exit",
+							"Từ chối.": "end",
+						}
+					},
+					{
+						"state": "exit",
+						"text": "Được rồi, vậy hẹn gặp cậu sau.",
+						"options": {}
+					},
+					{
+						"state": "end",
+						"text": "Được rồi, vậy hẹn gặp cậu sau.",
+						"options": {}
+					},
+				],
+			},
+			{
+				"branch_id": "npc_default",
+				"dialogs": [
+					{
+						"state": "start",
+						"text": "Ồ, Chào cậu!!!",
+						"options": {
+							"Tôi đang vội hẹn ông sau": "exit",
+							"Ông có việc gì cho tôi không": "give_quest",
+							"Chào trưởng làng, giạo này tình hình trong làng có gì không?": "in_progress",
+						}
+					},
+					{
+						"state": "in_progress",
+						"text": "Cũng bình thường, không có rắc rối gì lớn cả.",
+						"options": {
+							"Hẹn ông dịp khác nói chuyện tiếp nhé.": "exit",
+						}
+					},
+					{
+						"state": "give_quest",
+						"text": "Có, tôi đang cần 5 cụ thang, cậu tìm giúp tôi.",
+						"options": {
+							"Đồng ý.": "start",
+							"Từ chối.": "exit",
 						}
 					},
 					{

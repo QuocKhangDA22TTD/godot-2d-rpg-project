@@ -98,17 +98,17 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dqvnt"]
-size = Vector2(4, 25)
+size = Vector2(4, 25.75)
 
 [node name="Sword" type="Node2D"]
 script = ExtResource("1_dqvnt")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_mqwp4")
-offset = Vector2(0, -14)
+offset = Vector2(0, -18)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Sprite2D"]
-position = Vector2(-8, -21)
+position = Vector2(-8, -25)
 rotation = -2.37809
 sprite_frames = SubResource("SpriteFrames_l6frt")
 animation = &"slash"
@@ -124,7 +124,7 @@ position = Vector2(0, 7)
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(0, -21.5)
+position = Vector2(0, -25.125)
 shape = SubResource("RectangleShape2D_dqvnt")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
