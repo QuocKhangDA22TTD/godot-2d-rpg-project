@@ -31,7 +31,7 @@ func update_quest_list():
 	var active_quests = get_parent().get_active_quests()
 	if active_quests.size() == 0:
 		clear_quest_details()
-		# Global.player.selected_quest = null
+		Global.player.selected_quest = null
 		# Global.player.update_quest_tracker(null)
 	else:
 		for quest in active_quests:
@@ -43,16 +43,17 @@ func update_quest_list():
 
 func _on_quest_selected(quest: Quest):
 	selected_quest = quest
+	Global.player.selected_quest = quest
 	
 	quest_title.text = quest.quest_name
-	quest_description = quest.quest_description
+	quest_description.text = quest.quest_description
 	
 	for child in quest_objectives.get_children():
 		quest_objectives.remove_child(child)
 	
 	for objective in quest.objectives:
 		var label = Label.new()
-		label.add_theme_font_size_override("font_size", 20)
+		label.add_theme_font_size_override("font_size", 8)
 		
 		if objective.target_type == "collection":
 			label.text = objective.description + "(" + str(objective.collected_quantity) + "/" + str(objective.required_quantity) + ")"
@@ -71,8 +72,8 @@ func _on_quest_selected(quest: Quest):
 	
 	for reward in quest.rewards:
 		var label = Label.new()
-		label.add_theme_font_size_override("font_size", 20)
-		label.add_theme_font_color_override("font_color", Color(0, 0.84, 0))
+		label.add_theme_font_size_override("font_size", 8)
+		label.add_theme_color_override("font_color", Color(0, 0.84, 0))
 		label.text = "Phần thưởng: " + reward.reward_type.capitalize() + ": " + str(reward.reward_amount)
 		quest_rewards.add_child(label) 
 

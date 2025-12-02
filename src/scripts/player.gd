@@ -6,6 +6,8 @@ var max_health = 5.0
 
 #var is_open_inventory = false # Để đây một thời gian xem có chuyện gì xảy ra không, nếu không có thì bỏ dòng này
 var can_move = true
+var selected_quest: Quest = null
+var coin_amount = 0
 
 @onready var anima = $AnimatedSprite2D
 @onready var colli = $CollisionShape2D
@@ -16,6 +18,7 @@ var can_move = true
 @onready var interact_ui = $InteracUI
 @onready var ray_cast_2d = $RayCast2D
 @onready var quest_manager = $QuestManager
+@onready var coin_amount_label = $HUD/CoinAmount
 
 signal died
 
@@ -33,6 +36,8 @@ func _ready():
 	anima.play("idle")
 	Global.facing = false
 	health_label.text = "Máu: " + str(health)
+	
+	update_coins()
 
 func _physics_process(delta: float) -> void:
 	if GameManager.game_over:
@@ -103,6 +108,12 @@ func take_damaged(amount):
 	if health <= 0:
 		emit_signal("died")
 
+func apply_item_effect (item):
+	match item["item_effect"]:
+		"Hồi máu":
+			health += 3
+			health = clamp(health, 0, max_health)
+
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("inventory") and !PauseMenu.visible:
 		inventory_ui.visible = !inventory_ui.visible
@@ -114,17 +125,47 @@ func _input(event: InputEvent) -> void:
 			var target = ray_cast_2d.get_collider()
 			if target != null:
 				if target.is_in_group("NPC"):
-					print("xin chào trưởng làng")
 					can_move = false
 					target.start_dialog()
+					check_quest_objectives(target.npc_id, "talk_to")
 				elif target.is_in_group("Items"):
-					print("Tôi vừa nhặt " + target.get_parent().item_name)
+					if is_item_needed(target.get_parent().item_name):
+						check_quest_objectives(target.get_parent().item_name, "Collection")
+					else:
+						print("item không cần thiết cho bất kìa mục tiêu nào")
 	
 	if event.is_action_pressed("quest"):
 		quest_manager.show_hide_log()
 
-func apply_item_effect (item):
-	match item["item_effect"]:
-		"Hồi máu":
-			health += 3
-			health = clamp(health, 0, max_health)
+func is_item_needed(item_name: String) -> bool:
+	if selected_quest != null:
+		for objective in selected_quest.objectives:
+			if objective.target_id == item_name and objective.target_type == "Collection" and not objective.is_completed:
+				return true
+	return false
+
+func check_quest_objectives(target_id: String, target_type: String, quantity: int = 1):
+	if selected_quest == null:
+		return
+	
+	var objective_updated = false
+	for objective in selected_quest.objectives:
+		if objective.target_id == target_id and objective.target_type == target_type and not objective.is_completed:
+			print("hoàn thành mục tiêu của nhiệm vụ: " + selected_quest.quest_name)
+			selected_quest.complete_objective(objective.id, quantity)
+			objective_updated = true
+			break
+	
+	if objective_updated:
+		if selected_quest.is_completed():
+			handle_quest_completion(selected_quest)
+
+func handle_quest_completion(quest: Quest):
+	for reward in quest.rewards:
+		if reward.reward_type == "coins":
+			coin_amount += reward.reward_amount
+			update_coins()
+	quest_manager.update_quest(quest.quest_id, "completed")
+
+func update_coins():
+	coin_amount_label.text = str(coin_amount)

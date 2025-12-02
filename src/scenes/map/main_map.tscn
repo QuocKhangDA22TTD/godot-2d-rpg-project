@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=4 uid="uid://b56eep5gwc6qs"]
+[gd_scene load_steps=46 format=4 uid="uid://b56eep5gwc6qs"]
 
 [ext_resource type="Texture2D" uid="uid://bq2pg8sd2yng7" path="res://assets/tilesheets/tilesheet.png" id="1_0gcij"]
 [ext_resource type="Script" uid="uid://xc34wxp0w7ok" path="res://scripts/main_map.gd" id="1_joqnj"]
@@ -13,6 +13,8 @@
 [ext_resource type="PackedScene" uid="uid://byceli8qr3yje" path="res://scenes/npc/guild_president.tscn" id="11_mwyg5"]
 [ext_resource type="Script" uid="uid://dtdohrmy65vlu" path="res://resources/quest/quests.gd" id="12_4g7fm"]
 [ext_resource type="PackedScene" uid="uid://dtv5l6mjsh46j" path="res://scenes/npc/seller.tscn" id="12_6im03"]
+[ext_resource type="Script" uid="uid://cxicp0dg6wvkk" path="res://resources/quest/objectives.gd" id="12_sb462"]
+[ext_resource type="Script" uid="uid://cbtad53lfxej5" path="res://resources/quest/rewards.gd" id="13_o41i1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3f3oo"]
 shader = ExtResource("1_tm01x")
@@ -299,6 +301,35 @@ script = ExtResource("10_k7m4y")
 dialogs = {}
 metadata/_custom_type_script = "uid://c2co2qs2lreh0"
 
+[sub_resource type="Resource" id="Resource_psdvt"]
+script = ExtResource("12_sb462")
+id = "1"
+description = "tìm 1 cục thang"
+target_id = "Than đá"
+target_type = "Collection"
+objective_dialog = "Tôi cần một cục than"
+required_quantity = 1
+collected_quantity = 0
+is_completed = false
+metadata/_custom_type_script = "uid://cxicp0dg6wvkk"
+
+[sub_resource type="Resource" id="Resource_kheg7"]
+script = ExtResource("13_o41i1")
+reward_type = "coins"
+reward_amount = 50
+metadata/_custom_type_script = "uid://cbtad53lfxej5"
+
+[sub_resource type="Resource" id="Resource_ndehx"]
+script = ExtResource("12_4g7fm")
+quest_id = "1"
+quest_name = "tìm than"
+quest_description = "Tìm cho trưởng làng cục thang"
+state = "not_started"
+unlock_id = "chương 1"
+objectives = Array[ExtResource("12_sb462")]([SubResource("Resource_psdvt")])
+rewards = Array[ExtResource("13_o41i1")]([SubResource("Resource_kheg7")])
+metadata/_custom_type_script = "uid://dtdohrmy65vlu"
+
 [node name="MainMap" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_joqnj")
@@ -394,13 +425,13 @@ destiation_door_tag = "Indoor"
 position = Vector2(1, 25)
 
 [node name="InventoryItem" parent="." instance=ExtResource("7_tp1qk")]
-position = Vector2(1536, 752)
+position = Vector2(829, 402)
 item_type = "Vật liệu"
 item_name = "Than đá"
 item_texture = SubResource("AtlasTexture_k7m4y")
 
 [node name="InventoryItem2" parent="." instance=ExtResource("7_tp1qk")]
-position = Vector2(1432, 712)
+position = Vector2(801, 380)
 item_type = "Tiêu hao"
 item_name = "Bình máu"
 item_texture = SubResource("AtlasTexture_mwyg5")
@@ -413,6 +444,7 @@ y_sort_enabled = true
 y_sort_enabled = true
 position = Vector2(856, 352)
 dialog_resource = SubResource("Resource_mwyg5")
+quests = Array[ExtResource("12_4g7fm")]([SubResource("Resource_ndehx")])
 
 [node name="GuildPresident" parent="NPCs" instance=ExtResource("11_mwyg5")]
 y_sort_enabled = true

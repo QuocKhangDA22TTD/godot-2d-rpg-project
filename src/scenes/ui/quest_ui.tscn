@@ -46,10 +46,11 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_0nwrp")
 
 [node name="Contents" type="VBoxContainer" parent="CanvasLayer/Panel"]
 layout_mode = 1
-anchors_preset = 10
+anchors_preset = 15
 anchor_right = 1.0
-offset_bottom = 85.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Headings" type="HBoxContainer" parent="CanvasLayer/Panel/Contents"]
 layout_mode = 2
@@ -70,21 +71,25 @@ horizontal_alignment = 1
 
 [node name="Details" type="HBoxContainer" parent="CanvasLayer/Panel/Contents"]
 layout_mode = 2
+size_flags_vertical = 2
+size_flags_stretch_ratio = 5.0
 
 [node name="QuestList" type="VBoxContainer" parent="CanvasLayer/Panel/Contents/Details"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 6
 
 [node name="QuestDetail" type="VBoxContainer" parent="CanvasLayer/Panel/Contents/Details"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 6
 
 [node name="QuestTitle" type="Label" parent="CanvasLayer/Panel/Contents/Details/QuestDetail"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 12
 text = "Đánh quái"
 
 [node name="QuestDescription" type="Label" parent="CanvasLayer/Panel/Contents/Details/QuestDetail"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 8
 text = "Tiêu diệt 10 con quái
 than trong hầm mỏ"
 

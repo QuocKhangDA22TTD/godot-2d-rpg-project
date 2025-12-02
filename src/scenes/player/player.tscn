@@ -156,7 +156,7 @@ layer = 0
 offset_right = 40.0
 offset_bottom = 23.0
 
-[node name="Coins" type="Label" parent="HUD"]
+[node name="CoinAmount" type="Label" parent="HUD"]
 offset_left = 246.0
 offset_right = 340.0
 offset_bottom = 23.0

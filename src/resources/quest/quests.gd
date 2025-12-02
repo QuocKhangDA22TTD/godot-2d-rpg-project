@@ -19,7 +19,7 @@ func is_completed() -> bool:
 func complete_objective(objective_id: String, quantity: int = 1):
 	for objective in objectives:
 		if objective.id == objective_id:
-			if objective.target_type == "collection":
+			if objective.target_type == "Collection":
 				objective.collected_quantity += quantity
 				if objective.collected_quantity >= objective.required_quantity:
 					objective.is_completed = true

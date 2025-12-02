@@ -22,10 +22,9 @@
 					},
 					{
 						"state": "give_quest",
-						"text": "Tôi đang cần 2 cục than.",
+						"text": "Nếu có công việc gì thì tôi sẽ nói cậu sau.",
 						"options": {
-							"Đồng ý.": "exit",
-							"Từ chối.": "end",
+							"Tôi sẽ ghé lại vào lần sao": "exit",
 						}
 					},
 					{
