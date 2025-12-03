@@ -162,6 +162,7 @@ offset_right = 340.0
 offset_bottom = 23.0
 size_flags_horizontal = 0
 text = "Tiền: 0 đồng"
+horizontal_alignment = 2
 
 [node name="HealthBar" parent="HUD" instance=ExtResource("5_0owmy")]
 

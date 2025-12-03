@@ -60,7 +60,7 @@
 					},
 					{
 						"state": "give_quest",
-						"text": "Có, tôi đang cần 5 cụ thang, cậu tìm giúp tôi.",
+						"text": "Có, tôi đang cần 1 cụ thang, cậu tìm giúp tôi.",
 						"options": {
 							"Đồng ý.": "start",
 							"Từ chối.": "exit",

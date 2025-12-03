@@ -238,9 +238,9 @@ texture = ExtResource("1_0gcij")
 0:13/size_in_atlas = Vector2i(8, 7)
 0:13/0 = 0
 0:13/0/y_sort_origin = 40
-8:12/size_in_atlas = Vector2i(8, 8)
-8:12/0 = 0
-8:12/0/y_sort_origin = 40
+8:13/size_in_atlas = Vector2i(8, 7)
+8:13/0 = 0
+8:13/0/y_sort_origin = 40
 
 [sub_resource type="TileSet" id="TileSet_3f3oo"]
 sources/0 = SubResource("TileSetAtlasSource_tm01x")
@@ -325,7 +325,7 @@ quest_id = "1"
 quest_name = "tìm than"
 quest_description = "Tìm cho trưởng làng cục thang"
 state = "not_started"
-unlock_id = "chương 1"
+unlock_id = "npc_default"
 objectives = Array[ExtResource("12_sb462")]([SubResource("Resource_psdvt")])
 rewards = Array[ExtResource("13_o41i1")]([SubResource("Resource_kheg7")])
 metadata/_custom_type_script = "uid://dtdohrmy65vlu"
@@ -363,7 +363,7 @@ tile_set = SubResource("TileSet_tm01x")
 [node name="TileMapLayer5" type="TileMapLayer" parent="TileMap"]
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_sb462")
-tile_map_data = PackedByteArray("AAAiAAsAAAAAAAUAAAAZAAsAAAAAAAUAAAAQAAsAAAAAAAUAAAArABUAAAAAAA0AAAAiABUAAAAAAA0AAAAQABUAAAAAAA0AAAAZABUAAAAAAA0AAAArAAsAAAAIAAwAAAA=")
+tile_map_data = PackedByteArray("AAAiAAsAAAAAAAUAAAAZAAsAAAAAAAUAAAAQAAsAAAAAAAUAAAArABUAAAAAAA0AAAAiABUAAAAAAA0AAAAQABUAAAAAAA0AAAAZABUAAAAAAA0AAAArAAoAAAAIAA0AAAA=")
 tile_set = SubResource("TileSet_3f3oo")
 
 [node name="TileMapLayer6" type="TileMapLayer" parent="TileMap"]
