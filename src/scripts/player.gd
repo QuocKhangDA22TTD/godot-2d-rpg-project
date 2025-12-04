@@ -138,27 +138,31 @@ func _input(event: InputEvent) -> void:
 		quest_manager.show_hide_log()
 
 func is_item_needed(item_name: String) -> bool:
-	if selected_quest != null:
-		for objective in selected_quest.objectives:
+	var quests = quest_manager.get_active_quests()
+	
+	for quest in quests:
+		for objective in quest.objectives: 
 			if objective.target_id == item_name and objective.target_type == "Collection" and not objective.is_completed:
 				return true
 	return false
 
 func check_quest_objectives(target_id: String, target_type: String, quantity: int = 1):
-	if selected_quest == null:
+	var quests = quest_manager.get_active_quests()
+	if quests.is_empty():
 		return
-	
-	var objective_updated = false
-	for objective in selected_quest.objectives:
-		if objective.target_id == target_id and objective.target_type == target_type and not objective.is_completed:
-			print("hoàn thành mục tiêu của nhiệm vụ: " + selected_quest.quest_name)
-			selected_quest.complete_objective(objective.id, quantity)
-			objective_updated = true
-			break
-	
-	if objective_updated:
-		if selected_quest.is_completed():
-			handle_quest_completion(selected_quest)
+
+	for quest in quests:
+		var objective_updated = false
+		
+		for objective in quest.objectives:
+			if objective.target_id == target_id and objective.target_type == target_type and not objective.is_completed:
+				print("hoàn thành mục tiêu của nhiệm vụ: " + quest.quest_name)
+				quest.complete_objective(objective.id, quantity)
+				objective_updated = true
+				break
+
+		if objective_updated and quest.is_completed():
+			handle_quest_completion(quest)
 
 func handle_quest_completion(quest: Quest):
 	for reward in quest.rewards:

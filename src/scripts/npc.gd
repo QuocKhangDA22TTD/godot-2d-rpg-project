@@ -56,8 +56,10 @@ func get_quest_dialog() -> Dictionary:
 	var active_quests = quest_manager.get_active_quests()
 	
 	for quest in active_quests:
-		for objectvie in quest.objectives:
-			if objectvie.target_id == npc_id and objectvie.target_type == "talk_to" and not objectvie.is_completed:
+		for objective in quest.objectives:
+			if objective.target_id == npc_id and objective.target_type == "talk_to" and not objective.is_completed:
+				print("xin chao")
+				print(current_state)
 				if current_state == "start":
-					return {"text": objectvie.objective_dialog, "option": {}}
-	return {"text": "", "option": {}}
+					return {"text": objective.objective_dialog, "options": {"Rời đi": "exit"}}
+	return {"text": "", "options": {}}

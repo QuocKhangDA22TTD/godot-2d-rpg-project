@@ -2,39 +2,31 @@
 	"trưởng làng": {
 		"trees": [
 			{
-				"branch_id": "chương 1",
+				"branch_id": "kiếm nơi ở",
 				"dialogs": [
 					{
 						"state": "start",
-						"text": "Chào mừng cậu đến với ngôi làng của chúng tôi, cậu chắc hẳn mạo hiểm giả đã nghe về tin đồn của ngồi làng mà đến đây đúng không.",
+						"text": "Xin chào.",
 						"options": {
-							"Tôi đang vội hẹn ông sau": "exit",
-							"Ông có việc gì cho tôi làm không": "give_quest",
-							"Tôi đang cần tìm nhà trọ, ông có biết chỗ có nhà trọ không?": "in_progress",
-						}
-					},
-					{
-						"state": "in_progress",
-						"text": "Cậu có thể đến gặp và hỏi trực tiếp ngài hội trưởng hội mạo hiểm giả ở ngôi làng này ,anh ây tên là Tiết, giờ này anh ấy đang ở tòa nhà hội mạo hiểm.",
-						"options": {
-							"Cám ơn trưởng làng": "end",
+							"Rời đi": "exit",
+							"Tìm phòng trọ": "give_quest",
 						}
 					},
 					{
 						"state": "give_quest",
-						"text": "Nếu có công việc gì thì tôi sẽ nói cậu sau.",
+						"text": "Cậu hãy hỏi hội trưởng của hội mạo hiểm giả.",
 						"options": {
-							"Tôi sẽ ghé lại vào lần sao": "exit",
+							"Rời đi": "end",
 						}
 					},
 					{
 						"state": "exit",
-						"text": "Được rồi, vậy hẹn gặp cậu sau.",
+						"text": "",
 						"options": {}
 					},
 					{
 						"state": "end",
-						"text": "Được rồi, vậy hẹn gặp cậu sau.",
+						"text": "",
 						"options": {}
 					},
 				],
@@ -44,31 +36,27 @@
 				"dialogs": [
 					{
 						"state": "start",
-						"text": "Ồ, Chào cậu!!!",
+						"text": "Chào cậu.",
 						"options": {
-							"Tôi đang vội hẹn ông sau": "exit",
-							"Ông có việc gì cho tôi không": "give_quest",
-							"Chào trưởng làng, giạo này tình hình trong làng có gì không?": "in_progress",
-						}
-					},
-					{
-						"state": "in_progress",
-						"text": "Cũng bình thường, không có rắc rối gì lớn cả.",
-						"options": {
-							"Hẹn ông dịp khác nói chuyện tiếp nhé.": "exit",
+							"Rời đi": "exit",
+							"Nhận nhiệm vụ": "give_quest",
 						}
 					},
 					{
 						"state": "give_quest",
-						"text": "Có, tôi đang cần 1 cụ thang, cậu tìm giúp tôi.",
+						"text": "Hiện tại tôi không có việc gì cho cậu.",
 						"options": {
-							"Đồng ý.": "start",
-							"Từ chối.": "exit",
+							"Rời đi": "exit",
 						}
 					},
 					{
 						"state": "exit",
-						"text": "Được rồi, vậy hẹn gặp cậu sau.",
+						"text": "",
+						"options": {}
+					},
+					{
+						"state": "end",
+						"text": "",
 						"options": {}
 					},
 				],
@@ -78,26 +66,28 @@
 	"hội trưởng": {
 		"trees": [
 			{
-				"branch_id": "chương 1",
+				"branch_id": "npc_default",
 				"dialogs": [
 					{
 						"state": "start",
-						"text": "Chào cậu, cậu định hỏi gì à?.",
+						"text": "Xin chào.",
 						"options": {
-							"Không có gì": "exit",
-							"Tôi đang cần tìm nhà trọ": "in_progress",
+							"Rời đi": "exit",
 						}
 					},
 					{
-						"state": "in_progress",
-						"text": "Nếu là tìm nhà trọ thì chỗ tôi còn dư một phòng, cậu có thể đến đó để ở.",
-						"options": {
-							"Cám ơn hội trưởng": "exit",
-						}
+						"state": "give_quest",
+						"text": "Kiếm cho tôi 1 cụ thang.",
+						"options": {}
 					},
 					{
 						"state": "exit",
-						"text": "Được rồi, vậy hẹn gặp cậu sau.",
+						"text": "",
+						"options": {}
+					},
+					{
+						"state": "end",
+						"text": "",
 						"options": {}
 					},
 				],
@@ -111,22 +101,22 @@
 				"dialogs": [
 					{
 						"state": "start",
-						"text": "Chào cậu, cậu muốn mua gì phải không?.",
+						"text": "Cậu muốn mua gì?",
 						"options": {
-							"Không": "exit",
-							"Tôi đang cần một chai thuốc hồi máu": "in_progress",
+							"Rời đi": "exit",
+							"Thuốc hồi máu": "in_progress",
 						}
 					},
 					{
 						"state": "in_progress",
-						"text": "tiếc quá tôi hết thuốc hồi máu rồi.",
+						"text": "Không có thuốc hồi máu.",
 						"options": {
-							"vậy thôi, lần sau tôi ghé tiếp.": "exit",
+							"Rời đi": "exit",
 						}
 					},
 					{
 						"state": "exit",
-						"text": "Được rồi, vậy hẹn gặp cậu sau.",
+						"text": "",
 						"options": {}
 					},
 				],
