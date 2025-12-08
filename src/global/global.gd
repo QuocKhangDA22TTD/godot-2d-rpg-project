@@ -17,12 +17,12 @@ func add_item(item):
 		if inventory[i] != null and inventory[i]["item_name"] == item["item_name"]:
 			inventory[i]["quantity"] += item["quantity"]
 			#inventory_updated.emit()
-			print("add: ", inventory)
+			#print("add: ", inventory)
 			return true
 		elif inventory[i] == null:
 			inventory[i] = item
 			#inventory_updated.emit()
-			print("add: ", inventory)
+			#print("add: ", inventory)
 			return true
 	return false
 
@@ -32,7 +32,7 @@ func remove_item(item_name):
 			inventory[i]["quantity"] -= 1
 			if inventory[i]["quantity"] <= 0:
 				inventory[i] = null
-			print("remove: ", inventory)
+			#print("remove: ", inventory)
 			inventory_updated.emit()
 			return true
 	return false
@@ -50,10 +50,28 @@ func adjust_drop_position(position):
 			break
 	return position
 
-func drop_item(item_data, drop_position):
-	var item_scene = load(item_data["scene_path"])
-	var item_instance = item_scene.instantiate()
-	item_instance.set_data_item(item_data)
-	drop_position = adjust_drop_position(drop_position)
-	item_instance.global_position = drop_position
-	get_tree().current_scene.add_child(item_instance)
+func drop_item(item: Dictionary, drop_position: Vector2, parent_node: Node = null):
+	"""Drop item at a specific position in the world"""
+	# Adjust drop position nếu có item khác ở gần
+	var adjusted_pos = adjust_drop_position(drop_position)
+	
+	# Tạo instance của inventory_item scene
+	var item_instance = preload("res://scenes/entity/inventory_item.tscn").instantiate()
+	
+	# Set dữ liệu của item
+	item_instance.item_type = item["item_type"]
+	item_instance.item_name = item["item_name"]
+	item_instance.item_texture = item["item_texture"]
+	item_instance.item_effect = item["item_effect"]
+	
+	# Set vị trí drop
+	item_instance.global_position = adjusted_pos
+	
+	# Thêm vào đúng parent (map hoặc scene hiện tại)
+	if parent_node:
+		parent_node.add_child(item_instance)
+	else:
+		get_tree().current_scene.add_child(item_instance)
+	
+	item_instance.add_to_group("Items")
+	print("[Global] Item dropped: ", item["item_name"], " at ", adjusted_pos)

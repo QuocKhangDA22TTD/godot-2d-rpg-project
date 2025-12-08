@@ -21,6 +21,13 @@ func go_to_level(level_tag, destination_tag):
 			scene_to_load = in_door
 	
 	if scene_to_load != null:
+		# Lưu trạng thái player và quest trước khi chuyển scene
+		if Global.player:
+			GameManager.save_player_positon()
+			if Global.player.quest_manager:
+				Global.player.quest_manager.save_quests()
+				print("Đã lưu quest và trạng thái player trước khi chuyển map")
+		
 		TransitionScreen.transition()
 		await TransitionScreen.on_transition_finished
 		spawn_door_tag = destination_tag

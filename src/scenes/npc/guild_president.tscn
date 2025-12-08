@@ -22,6 +22,7 @@ state = "not_started"
 unlock_id = "1"
 objectives = Array[ExtResource("4_37i2l")]([null])
 rewards = Array[ExtResource("5_lr645")]([null])
+is_repeatable = false
 metadata/_custom_type_script = "uid://dtdohrmy65vlu"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_apba8"]

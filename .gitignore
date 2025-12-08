@@ -1,0 +1,8 @@
+# Documentation folder - not tracked by git
+docs/
+
+# Godot-specific
+.godot/
+*.import
+export/
+.DS_Store

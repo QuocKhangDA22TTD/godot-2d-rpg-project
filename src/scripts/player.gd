@@ -6,7 +6,6 @@ var max_health = 5.0
 
 #var is_open_inventory = false # Để đây một thời gian xem có chuyện gì xảy ra không, nếu không có thì bỏ dòng này
 var can_move = true
-var selected_quest: Quest = null
 var coin_amount = 0
 
 @onready var anima = $AnimatedSprite2D
@@ -29,6 +28,9 @@ func _ready():
 		pass
 	else:
 		load_position(data)
+		# Load coins nếu có
+		if typeof(data) == TYPE_DICTIONARY and data.has("coins"):
+			coin_amount = int(data.get("coins", 0))
 		
 	Global.player = GameManager.player
 	#Global.player.health = data["health"]
@@ -129,10 +131,8 @@ func _input(event: InputEvent) -> void:
 					target.start_dialog()
 					check_quest_objectives(target.npc_id, "talk_to")
 				elif target.is_in_group("Items"):
-					if is_item_needed(target.get_parent().item_name):
-						check_quest_objectives(target.get_parent().item_name, "Collection")
-					else:
-						print("item không cần thiết cho bất kìa mục tiêu nào")
+					# Gọi pickup_item từ inventory_item.gd để xử lý
+					target.get_parent().pickup_item()
 	
 	if event.is_action_pressed("quest"):
 		quest_manager.show_hide_log()
@@ -149,6 +149,7 @@ func is_item_needed(item_name: String) -> bool:
 func check_quest_objectives(target_id: String, target_type: String, quantity: int = 1):
 	var quests = quest_manager.get_active_quests()
 	if quests.is_empty():
+		print("Không có quest nào đang hoạt động")
 		return
 
 	for quest in quests:
@@ -156,20 +157,35 @@ func check_quest_objectives(target_id: String, target_type: String, quantity: in
 		
 		for objective in quest.objectives:
 			if objective.target_id == target_id and objective.target_type == target_type and not objective.is_completed:
-				print("hoàn thành mục tiêu của nhiệm vụ: " + quest.quest_name)
+				print("Cập nhật mục tiêu - Quest: " + quest.quest_name + ", Target: " + target_id + ", Quantity trước: " + str(objective.collected_quantity))
 				quest.complete_objective(objective.id, quantity)
+				print("Quantity sau: " + str(objective.collected_quantity) + "/" + str(objective.required_quantity))
 				objective_updated = true
+				# Emit signal via quest_manager and save progress so UI and file reflect update
+				if quest_manager:
+					quest_manager.objective_updated.emit(quest.quest_id, objective.id)
+					quest_manager.save_quests()
 				break
 
 		if objective_updated and quest.is_completed():
+			print("Quest hoàn thành: " + quest.quest_name)
 			handle_quest_completion(quest)
 
 func handle_quest_completion(quest: Quest):
 	for reward in quest.rewards:
 		if reward.reward_type == "coins":
+			print("[DEBUG] Trước khi cộng thưởng: coin_amount=", coin_amount, ", reward=", reward.reward_amount)
 			coin_amount += reward.reward_amount
 			update_coins()
+			print("[DEBUG] Sau khi cộng thưởng: coin_amount=", coin_amount)
+	# Lưu tiền ngay lập tức trước khi cập nhật trạng thái quest
+	var saved_before = GameManager.save_player_positon()
+	print("[DEBUG] save_player_positon() trước update_quest trả về:", saved_before)
+	# Cập nhật trạng thái quest (có thể xóa hoặc reset tùy is_repeatable)
 	quest_manager.update_quest(quest.quest_id, "completed")
+	# Lưu lại player ngay sau khi cập nhật quest để chắc chắn
+	var saved_after = GameManager.save_player_positon()
+	print("[DEBUG] save_player_positon() sau update_quest trả về:", saved_after)
 
 func update_coins():
 	coin_amount_label.text = str(coin_amount)

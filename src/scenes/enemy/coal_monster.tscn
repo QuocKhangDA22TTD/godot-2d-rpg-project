@@ -1,14 +1,39 @@
-[gd_scene load_steps=14 format=3 uid="uid://liycm3ocnyf3"]
+[gd_scene load_steps=21 format=3 uid="uid://liycm3ocnyf3"]
 
 [ext_resource type="Shader" uid="uid://cg60x1urggnub" path="res://shader/hit_flash.gdshader" id="1_3v7iv"]
 [ext_resource type="Script" uid="uid://ukvu6ar45akj" path="res://scripts/coal_monster.gd" id="1_5kl1k"]
 [ext_resource type="Texture2D" uid="uid://u3mwoi66d5qy" path="res://assets/sprites/coal_monster.png" id="1_wmkj6"]
+[ext_resource type="Texture2D" uid="uid://c1qbmo2cpx64g" path="res://assets/sprites/explode.png" id="3_mcctr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3v7iv"]
 resource_local_to_scene = true
 shader = ExtResource("1_3v7iv")
 shader_parameter/hit_flash_color = Color(1, 1, 1, 1)
 shader_parameter/hit_flash_on = false
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_di3yp"]
+atlas = ExtResource("3_mcctr")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eynwy"]
+atlas = ExtResource("3_mcctr")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qeew6"]
+atlas = ExtResource("3_mcctr")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fjai5"]
+atlas = ExtResource("3_mcctr")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gmdnd"]
+atlas = ExtResource("3_mcctr")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nefxd"]
+atlas = ExtResource("3_mcctr")
+region = Rect2(160, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5kl1k"]
 atlas = ExtResource("1_wmkj6")
@@ -28,6 +53,29 @@ region = Rect2(48, 0, 16, 24)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_di3yp"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_di3yp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eynwy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qeew6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fjai5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gmdnd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nefxd")
+}],
+"loop": false,
+"name": &"dead",
+"speed": 8.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_5kl1k")
@@ -94,7 +142,9 @@ script = ExtResource("1_5kl1k")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_3v7iv")
 sprite_frames = SubResource("SpriteFrames_di3yp")
-animation = &"run"
+animation = &"dead"
+frame = 5
+frame_progress = 1.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AnimatedSprite2D"]
 root_node = NodePath("../..")

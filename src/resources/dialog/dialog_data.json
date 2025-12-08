@@ -44,7 +44,7 @@
 					},
 					{
 						"state": "give_quest",
-						"text": "Hiện tại tôi không có việc gì cho cậu.",
+						"text": "Tìm giúp tôi Than đá.",
 						"options": {
 							"Rời đi": "exit",
 						}

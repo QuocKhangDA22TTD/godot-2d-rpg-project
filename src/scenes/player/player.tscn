@@ -165,6 +165,7 @@ text = "Tiền: 0 đồng"
 horizontal_alignment = 2
 
 [node name="HealthBar" parent="HUD" instance=ExtResource("5_0owmy")]
+visible = false
 
 [node name="InventoryUI" type="CanvasLayer" parent="."]
 visible = false

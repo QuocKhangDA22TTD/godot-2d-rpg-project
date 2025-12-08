@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=4 uid="uid://b56eep5gwc6qs"]
+[gd_scene load_steps=42 format=4 uid="uid://b56eep5gwc6qs"]
 
 [ext_resource type="Texture2D" uid="uid://bq2pg8sd2yng7" path="res://assets/tilesheets/tilesheet.png" id="1_0gcij"]
 [ext_resource type="Script" uid="uid://xc34wxp0w7ok" path="res://scripts/main_map.gd" id="1_joqnj"]
@@ -6,8 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://cgamg5ml1v8kr" path="res://assets/tilesheets/building.png" id="2_1nh5e"]
 [ext_resource type="PackedScene" uid="uid://kxykv70vg2ud" path="res://scenes/npc/soldier.tscn" id="5_joqnj"]
 [ext_resource type="PackedScene" uid="uid://cf4nk3tfp6p0n" path="res://scenes/entity/door.tscn" id="6_tm01x"]
-[ext_resource type="PackedScene" uid="uid://d4bns3h0te7qu" path="res://scenes/entity/inventory_item.tscn" id="7_tp1qk"]
-[ext_resource type="Texture2D" uid="uid://dcj5vu84onw8c" path="res://assets/sprites/items.png" id="8_vrayl"]
 [ext_resource type="PackedScene" uid="uid://bvwgbjhgmkdf7" path="res://scenes/npc/village_chief.tscn" id="9_vrayl"]
 [ext_resource type="Script" uid="uid://c2co2qs2lreh0" path="res://resources/dialog/dialog.gd" id="10_k7m4y"]
 [ext_resource type="PackedScene" uid="uid://byceli8qr3yje" path="res://scenes/npc/guild_president.tscn" id="11_mwyg5"]
@@ -288,14 +286,6 @@ texture = ExtResource("1_0gcij")
 [sub_resource type="TileSet" id="TileSet_mwyg5"]
 sources/0 = SubResource("TileSetAtlasSource_k7m4y")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_k7m4y"]
-atlas = ExtResource("8_vrayl")
-region = Rect2(24, 0, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mwyg5"]
-atlas = ExtResource("8_vrayl")
-region = Rect2(0, 0, 24, 24)
-
 [sub_resource type="Resource" id="Resource_mwyg5"]
 script = ExtResource("10_k7m4y")
 dialogs = {}
@@ -304,11 +294,11 @@ metadata/_custom_type_script = "uid://c2co2qs2lreh0"
 [sub_resource type="Resource" id="Resource_psdvt"]
 script = ExtResource("12_sb462")
 id = "1"
-description = "tìm 1 cục thang"
+description = "tìm 3 cục thang"
 target_id = "Than đá"
 target_type = "Collection"
 objective_dialog = "Tôi cần một cục than"
-required_quantity = 1
+required_quantity = 3
 collected_quantity = 0
 is_completed = false
 metadata/_custom_type_script = "uid://cxicp0dg6wvkk"
@@ -328,6 +318,7 @@ state = "not_started"
 unlock_id = "npc_default"
 objectives = Array[ExtResource("12_sb462")]([SubResource("Resource_psdvt")])
 rewards = Array[ExtResource("13_o41i1")]([SubResource("Resource_kheg7")])
+is_repeatable = true
 metadata/_custom_type_script = "uid://dtdohrmy65vlu"
 
 [node name="MainMap" type="Node2D"]
@@ -423,19 +414,6 @@ destiation_door_tag = "Indoor"
 
 [node name="Spawn" parent="Doors/Door_OutDoor" index="1"]
 position = Vector2(1, 25)
-
-[node name="InventoryItem" parent="." instance=ExtResource("7_tp1qk")]
-position = Vector2(829, 402)
-item_type = "Vật liệu"
-item_name = "Than đá"
-item_texture = SubResource("AtlasTexture_k7m4y")
-
-[node name="InventoryItem2" parent="." instance=ExtResource("7_tp1qk")]
-position = Vector2(801, 380)
-item_type = "Tiêu hao"
-item_name = "Bình máu"
-item_texture = SubResource("AtlasTexture_mwyg5")
-item_effect = "Hồi máu"
 
 [node name="NPCs" type="Node2D" parent="."]
 y_sort_enabled = true

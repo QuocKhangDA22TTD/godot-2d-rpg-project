@@ -1,6 +1,5 @@
 extends Control
 
-var selected_quest: Quest = null
 var quest_manager: Node = null
 
 @onready var panel = $CanvasLayer/Panel
@@ -17,12 +16,11 @@ func _ready() -> void:
 	quest_manager = get_parent()
 	quest_manager.quest_updated.connect(_on_quest_updated)
 	quest_manager.objective_updated.connect(_on_objectives_updated)
+	quest_manager.quest_list_upadated.connect(_on_quest_list_updated)
 
 func show_hide_log():
 	panel.visible = !panel.visible
 	update_quest_list()
-	if selected_quest:
-		_on_quest_selected(selected_quest)
 
 func update_quest_list():
 	for child in quest_list.get_children():
@@ -31,7 +29,6 @@ func update_quest_list():
 	var active_quests = get_parent().get_active_quests()
 	if active_quests.size() == 0:
 		clear_quest_details()
-		Global.player.selected_quest = null
 		# Global.player.update_quest_tracker(null)
 	else:
 		for quest in active_quests:
@@ -41,10 +38,11 @@ func update_quest_list():
 			button.pressed.connect(_on_quest_selected.bind(quest))
 			quest_list.add_child(button)
 
+		# Auto-select first active quest so UI shows progress immediately
+		if active_quests.size() > 0:
+			_on_quest_selected(active_quests[0])
+
 func _on_quest_selected(quest: Quest):
-	selected_quest = quest
-	Global.player.selected_quest = quest
-	
 	quest_title.text = quest.quest_name
 	quest_description.text = quest.quest_description
 	
@@ -55,8 +53,8 @@ func _on_quest_selected(quest: Quest):
 		var label = Label.new()
 		label.add_theme_font_size_override("font_size", 8)
 		
-		if objective.target_type == "collection":
-			label.text = objective.description + "(" + str(objective.collected_quantity) + "/" + str(objective.required_quantity) + ")"
+		if objective.target_type == "Collection":
+			label.text = objective.description + " (" + str(objective.collected_quantity) + "/" + str(objective.required_quantity) + ")"
 		else:
 			label.text = objective.description
 		
@@ -88,13 +86,11 @@ func clear_quest_details():
 		quest_rewards.remove_child(child)
 
 func _on_quest_updated(quest_id: String):
-	if selected_quest and selected_quest.quest_id == quest_id:
-		_on_quest_selected(selected_quest)
-	else:
-		update_quest_list()
+	update_quest_list()
 
 func _on_objectives_updated(quest_id: String):
-	if selected_quest and selected_quest.quest_id == quest_id:
-		_on_quest_selected(selected_quest)
-	else:
-		clear_quest_details()
+	update_quest_list()
+
+func _on_quest_list_updated():
+	"""Cập nhật khi danh sách quest thay đổi (như khi load từ file)"""
+	update_quest_list()
