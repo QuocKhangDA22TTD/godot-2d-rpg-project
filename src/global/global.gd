@@ -18,11 +18,13 @@ func add_item(item):
 			inventory[i]["quantity"] += item["quantity"]
 			#inventory_updated.emit()
 			#print("add: ", inventory)
+			GameManager.save_inventory(inventory)  # Lưu inventory sau khi thêm item
 			return true
 		elif inventory[i] == null:
 			inventory[i] = item
 			#inventory_updated.emit()
 			#print("add: ", inventory)
+			GameManager.save_inventory(inventory)  # Lưu inventory sau khi thêm item
 			return true
 	return false
 
@@ -34,6 +36,7 @@ func remove_item(item_name):
 				inventory[i] = null
 			#print("remove: ", inventory)
 			inventory_updated.emit()
+			GameManager.save_inventory(inventory)  # Lưu inventory sau khi xóa item
 			return true
 	return false
 

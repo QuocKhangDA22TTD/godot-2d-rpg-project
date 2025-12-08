@@ -43,12 +43,20 @@ func set_empty():
 
 func set_item(new_item):
 	item = new_item
-	icon.texture = new_item["item_texture"]
-	item_quantity.text = str(new_item["quantity"])
+	# Kiểm tra item_texture có tồn tại không
+	if new_item.has("item_texture") and new_item["item_texture"] != null:
+		icon.texture = new_item["item_texture"]
+	else:
+		icon.texture = null
+	
+	item_quantity.text = str(int(new_item["quantity"]))  # Hiển thị số nguyên
 	item_name.text = "Tên: " + str(new_item["item_name"])
 	item_type.text = "Loại: " + str(new_item["item_type"])
 	if new_item["item_effect"] != "":
-		item_effect.text = "Hiệu ứng: " + str(new_item["item_effect"])
+		# Chuyển đổi effect code thành tên tiếng Việt
+		var display_name = GameManager.get_item_effect_display_name(new_item["item_effect"])
+		item_effect.text = "Hiệu ứng: " + display_name
+		use_button.visible = true  # Hiển thị nút dùng nếu có hiệu ứng
 	else:
 		use_button.visible = false
 		item_effect.text = "Hiệu ứng: Không có hiệu ứng"
@@ -71,6 +79,8 @@ func _on_use_button_pressed() -> void:
 		Global.player.apply_item_effect(item)
 		Global.remove_item(item["item_name"])
 		Global.player.change_health_label()
+		# Phát signal để cập nhật lại UI inventory
+		Global.inventory_updated.emit()
 	usage_panel.visible = false
 
 func _on_visibility_changed() -> void:

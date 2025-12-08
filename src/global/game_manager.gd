@@ -25,7 +25,9 @@ func save_player_positon():
 		"x": Global.player.global_position.x,
 		"y": Global.player.global_position.y,
 		"scene": Global.player.get_tree().current_scene.scene_file_path,
-		"coins": Global.player.coin_amount
+		"coins": Global.player.coin_amount,
+		"health": Global.player.health,
+		"max_health": Global.player.max_health
 	}
 
 	var file = FileAccess.open("user://savegame.save", FileAccess.WRITE)
@@ -113,12 +115,109 @@ func load_quests() -> Dictionary:
 	print("Quest tải thành công: ", quest_data.keys())
 	return quest_data
 
+func save_inventory(inventory_list: Array) -> bool:
+	"""Lưu inventory vào file"""
+	var inventory_data = []
+	
+	for item in inventory_list:
+		if item != null:
+			var item_save = {
+				"item_type": item["item_type"],
+				"item_name": item["item_name"],
+				"item_effect": item["item_effect"],
+				"quantity": item["quantity"],
+				"scene_path": item["scene_path"]
+			}
+			inventory_data.append(item_save)
+		else:
+			inventory_data.append(null)
+	
+	var file = FileAccess.open("user://inventory.save", FileAccess.WRITE)
+	if file:
+		var json_data = JSON.stringify(inventory_data)
+		file.store_string(json_data)
+		file.close()
+		print("Lưu inventory thành công")
+		return true
+	else:
+		print("Lưu inventory thất bại")
+		return false
+
+func load_inventory() -> Array:
+	"""Tải inventory từ file"""
+	var inventory_save_path = "user://inventory.save"
+	
+	if not FileAccess.file_exists(inventory_save_path):
+		print("Không tìm thấy file inventory.save")
+		return []
+	
+	var file = FileAccess.open(inventory_save_path, FileAccess.READ)
+	if file == null:
+		print("Không thể mở file inventory.save")
+		return []
+	
+	var content = file.get_as_text()
+	file.close()
+	
+	var inventory_data = JSON.parse_string(content)
+	
+	if inventory_data == null:
+		print("Lỗi khi parse inventory data")
+		return []
+	
+	if typeof(inventory_data) != TYPE_ARRAY:
+		print("Inventory data không phải array")
+		return []
+	
+	# Khôi phục inventory từ data
+	var loaded_inventory = []
+	for item_data in inventory_data:
+		if item_data != null:
+			var item = {
+				"item_type": item_data["item_type"],
+				"item_name": item_data["item_name"],
+				"item_effect": item_data["item_effect"],
+				"quantity": item_data["quantity"],
+				"scene_path": item_data["scene_path"],
+				"item_texture": get_item_texture(item_data["item_name"])  # 👈 Khôi phục texture
+			}
+			loaded_inventory.append(item)
+		else:
+			loaded_inventory.append(null)
+	
+	print("Inventory tải thành công: ", loaded_inventory.size(), " slots")
+	return loaded_inventory
+
+func get_item_texture(item_name: String) -> Texture:
+	"""Khôi phục texture dựa trên tên item"""
+	# Tạo AtlasTexture cho items từ items.png
+	var items_texture = preload("res://assets/sprites/items.png")
+	
+	match item_name:
+		"Than đá":
+			var atlas_texture = AtlasTexture.new()
+			atlas_texture.atlas = items_texture
+			atlas_texture.region = Rect2(24, 0, 24, 24)  # Than đá
+			return atlas_texture
+		"Bình máu":
+			var atlas_texture = AtlasTexture.new()
+			atlas_texture.atlas = items_texture
+			atlas_texture.region = Rect2(0, 0, 24, 24)  # Bình máu
+			return atlas_texture
+		_:
+			# Item không xác định, trả về null
+			print("Cảnh báo: Item '", item_name, "' không có texture định nghĩa")
+			return null
+
 func load_game():
 	if not FileAccess.file_exists(save_path):
 		var default_data = {
 			"scene": "res://scenes/map/main_map.tscn",
 			"x": 808.0,
-			"y": 24.0
+			"y": 24.0,
+			"health": 5.0,
+			"max_health": 5.0,
+			"coins": 0
 		}
 		save_game(default_data)
 	
@@ -132,6 +231,16 @@ func load_game():
 
 func _on_player_died():
 	game_over = true
+
+func get_item_effect_display_name(effect_code: String) -> String:
+	"""Convert item effect code to display name"""
+	match effect_code:
+		"heal":
+			return "Hồi máu"
+		"":
+			return "Không có hiệu ứng"
+		_:
+			return effect_code
 
 func save_game(data):
 	var json = JSON.stringify(data)

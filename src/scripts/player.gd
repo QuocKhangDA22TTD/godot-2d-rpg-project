@@ -31,6 +31,10 @@ func _ready():
 		# Load coins nếu có
 		if typeof(data) == TYPE_DICTIONARY and data.has("coins"):
 			coin_amount = int(data.get("coins", 0))
+		# Load health nếu có
+		if typeof(data) == TYPE_DICTIONARY and data.has("health"):
+			health = float(data.get("health", max_health))
+			max_health = float(data.get("max_health", 5.0))
 		
 	Global.player = GameManager.player
 	#Global.player.health = data["health"]
@@ -39,12 +43,22 @@ func _ready():
 	Global.facing = false
 	health_label.text = "Máu: " + str(health)
 	
+	# Load inventory từ file
+	var loaded_inventory = GameManager.load_inventory()
+	if loaded_inventory.size() > 0:
+		Global.inventory = loaded_inventory
+		print("Đã tải inventory từ file: ", loaded_inventory.size(), " slots")
+	
 	update_coins()
 
 func _physics_process(delta: float) -> void:
 	if GameManager.game_over:
 		anima.stop()
 		if get_tree().current_scene.name != "MainMap":
+			# Reset health về max khi chuyển scene sau khi chết
+			health = max_health
+			change_health_label()
+			GameManager.save_player_positon()  # Lưu health reset
 			await NavigationManager.go_to_level("main_map", "Village")
 			GameManager.game_over = false
 		return
@@ -112,9 +126,13 @@ func take_damaged(amount):
 
 func apply_item_effect (item):
 	match item["item_effect"]:
-		"Hồi máu":
+		"heal":  # Khớp với giá trị trong coal_monster.gd
 			health += 3
 			health = clamp(health, 0, max_health)
+			change_health_label()  # Cập nhật label ngay lập tức
+	# Lưu inventory sau khi thay đổi
+	GameManager.save_inventory(Global.inventory)
+	GameManager.save_player_positon()  # Lưu health mới
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("inventory") and !PauseMenu.visible:
@@ -136,6 +154,15 @@ func _input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("quest"):
 		quest_manager.show_hide_log()
+
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		# Lưu trạng thái trước khi thoát game
+		GameManager.save_player_positon()
+		GameManager.save_inventory(Global.inventory)
+		quest_manager.save_quests()
+		print("Đã lưu tất cả dữ liệu trước khi thoát game")
+		get_tree().quit()
 
 func is_item_needed(item_name: String) -> bool:
 	var quests = quest_manager.get_active_quests()
