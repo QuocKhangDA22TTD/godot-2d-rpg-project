@@ -2,21 +2,13 @@
 	"trưởng làng": {
 		"trees": [
 			{
-				"branch_id": "kiếm nơi ở",
+				"branch_id": "chào hỏi",
 				"dialogs": [
 					{
 						"state": "start",
 						"text": "Xin chào.",
 						"options": {
-							"Rời đi": "exit",
-							"Tìm phòng trọ": "give_quest",
-						}
-					},
-					{
-						"state": "give_quest",
-						"text": "Cậu hãy hỏi hội trưởng của hội mạo hiểm giả.",
-						"options": {
-							"Rời đi": "end",
+							"Rời đi": "exit"
 						}
 					},
 					{
@@ -28,8 +20,8 @@
 						"state": "end",
 						"text": "",
 						"options": {}
-					},
-				],
+					}
+				]
 			},
 			{
 				"branch_id": "npc_default",
@@ -38,15 +30,7 @@
 						"state": "start",
 						"text": "Chào cậu.",
 						"options": {
-							"Rời đi": "exit",
-							"Nhận nhiệm vụ": "give_quest",
-						}
-					},
-					{
-						"state": "give_quest",
-						"text": "Tìm giúp tôi Than đá.",
-						"options": {
-							"Rời đi": "exit",
+							"Rời đi": "exit"
 						}
 					},
 					{
@@ -58,27 +42,29 @@
 						"state": "end",
 						"text": "",
 						"options": {}
-					},
-				],
-			},
-		],
+					}
+				]
+			}
+		]
 	},
 	"hội trưởng": {
 		"trees": [
 			{
-				"branch_id": "npc_default",
+				"branch_id": "nhận nhiệm vụ",
 				"dialogs": [
 					{
 						"state": "start",
 						"text": "Xin chào.",
 						"options": {
-							"Rời đi": "exit",
+							"Rời đi": "exit"
 						}
 					},
 					{
 						"state": "give_quest",
-						"text": "Kiếm cho tôi 1 cụ thang.",
-						"options": {}
+						"text": "Kiếm cho tôi 3 cục than.",
+						"options": {
+							"Rời đi": "exit"
+						}
 					},
 					{
 						"state": "exit",
@@ -89,10 +75,10 @@
 						"state": "end",
 						"text": "",
 						"options": {}
-					},
-				],
-			},
-		],
+					}
+				]
+			}
+		]
 	},
 	"người bán hàng": {
 		"trees": [
@@ -104,23 +90,49 @@
 						"text": "Cậu muốn mua gì?",
 						"options": {
 							"Rời đi": "exit",
-							"Thuốc hồi máu": "in_progress",
+							"Thuốc hồi máu (50 gold)": "buy_health_potion"
 						}
 					},
 					{
-						"state": "in_progress",
-						"text": "Không có thuốc hồi máu.",
+						"state": "buy_health_potion",
+						"text": "Cậu có muốn mua bình hồi máu với giá 50 gold không?",
 						"options": {
-							"Rời đi": "exit",
+							"Mua": "buy_health_potion",
+							"Không mua": "start",
+							"Rời đi": "exit"
+						}
+					},
+					{
+						"state": "purchase_success",
+						"text": "Cảm ơn cậu! Đây là bình hồi máu của cậu.",
+						"options": {
+							"Mua thêm": "start",
+							"Rời đi": "exit"
+						}
+					},
+					{
+						"state": "insufficient_funds",
+						"text": "Xin lỗi, cậu không có đủ tiền để mua bình hồi máu.",
+						"options": {
+							"Quay lại": "start",
+							"Rời đi": "exit"
+						}
+					},
+					{
+						"state": "inventory_full",
+						"text": "Túi đồ của cậu đã đầy rồi! Hãy dọn dẹp trước khi mua thêm.",
+						"options": {
+							"Quay lại": "start",
+							"Rời đi": "exit"
 						}
 					},
 					{
 						"state": "exit",
 						"text": "",
 						"options": {}
-					},
-				],
-			},
-		],
-	},
+					}
+				]
+			}
+		]
+	}
 }

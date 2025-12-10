@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=4 uid="uid://b56eep5gwc6qs"]
+[gd_scene load_steps=34 format=4 uid="uid://b56eep5gwc6qs"]
 
 [ext_resource type="Texture2D" uid="uid://bq2pg8sd2yng7" path="res://assets/tilesheets/tilesheet.png" id="1_0gcij"]
 [ext_resource type="Script" uid="uid://xc34wxp0w7ok" path="res://scripts/main_map.gd" id="1_joqnj"]
@@ -6,13 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://cgamg5ml1v8kr" path="res://assets/tilesheets/building.png" id="2_1nh5e"]
 [ext_resource type="PackedScene" uid="uid://kxykv70vg2ud" path="res://scenes/npc/soldier.tscn" id="5_joqnj"]
 [ext_resource type="PackedScene" uid="uid://cf4nk3tfp6p0n" path="res://scenes/entity/door.tscn" id="6_tm01x"]
+[ext_resource type="PackedScene" uid="uid://dtv5l6mjsh46j" path="res://scenes/npc/seller.tscn" id="8_tp1qk"]
 [ext_resource type="PackedScene" uid="uid://bvwgbjhgmkdf7" path="res://scenes/npc/village_chief.tscn" id="9_vrayl"]
-[ext_resource type="Script" uid="uid://c2co2qs2lreh0" path="res://resources/dialog/dialog.gd" id="10_k7m4y"]
 [ext_resource type="PackedScene" uid="uid://byceli8qr3yje" path="res://scenes/npc/guild_president.tscn" id="11_mwyg5"]
-[ext_resource type="Script" uid="uid://dtdohrmy65vlu" path="res://resources/quest/quests.gd" id="12_4g7fm"]
-[ext_resource type="PackedScene" uid="uid://dtv5l6mjsh46j" path="res://scenes/npc/seller.tscn" id="12_6im03"]
-[ext_resource type="Script" uid="uid://cxicp0dg6wvkk" path="res://resources/quest/objectives.gd" id="12_sb462"]
-[ext_resource type="Script" uid="uid://cbtad53lfxej5" path="res://resources/quest/rewards.gd" id="13_o41i1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3f3oo"]
 shader = ExtResource("1_tm01x")
@@ -286,41 +282,6 @@ texture = ExtResource("1_0gcij")
 [sub_resource type="TileSet" id="TileSet_mwyg5"]
 sources/0 = SubResource("TileSetAtlasSource_k7m4y")
 
-[sub_resource type="Resource" id="Resource_mwyg5"]
-script = ExtResource("10_k7m4y")
-dialogs = {}
-metadata/_custom_type_script = "uid://c2co2qs2lreh0"
-
-[sub_resource type="Resource" id="Resource_psdvt"]
-script = ExtResource("12_sb462")
-id = "1"
-description = "tìm 3 cục thang"
-target_id = "Than đá"
-target_type = "Collection"
-objective_dialog = "Tôi cần một cục than"
-required_quantity = 3
-collected_quantity = 0
-is_completed = false
-metadata/_custom_type_script = "uid://cxicp0dg6wvkk"
-
-[sub_resource type="Resource" id="Resource_kheg7"]
-script = ExtResource("13_o41i1")
-reward_type = "coins"
-reward_amount = 50
-metadata/_custom_type_script = "uid://cbtad53lfxej5"
-
-[sub_resource type="Resource" id="Resource_ndehx"]
-script = ExtResource("12_4g7fm")
-quest_id = "1"
-quest_name = "tìm than"
-quest_description = "Tìm cho trưởng làng cục thang"
-state = "not_started"
-unlock_id = "npc_default"
-objectives = Array[ExtResource("12_sb462")]([SubResource("Resource_psdvt")])
-rewards = Array[ExtResource("13_o41i1")]([SubResource("Resource_kheg7")])
-is_repeatable = true
-metadata/_custom_type_script = "uid://dtdohrmy65vlu"
-
 [node name="MainMap" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_joqnj")
@@ -418,20 +379,14 @@ position = Vector2(1, 25)
 [node name="NPCs" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="VillageChief" parent="NPCs" instance=ExtResource("9_vrayl")]
-y_sort_enabled = true
-position = Vector2(856, 352)
-dialog_resource = SubResource("Resource_mwyg5")
-quests = Array[ExtResource("12_4g7fm")]([SubResource("Resource_ndehx")])
-
 [node name="GuildPresident" parent="NPCs" instance=ExtResource("11_mwyg5")]
-y_sort_enabled = true
-position = Vector2(1040, 568)
-quests = Array[ExtResource("12_4g7fm")]([])
+position = Vector2(1432, 722)
 
-[node name="Seller" parent="NPCs" instance=ExtResource("12_6im03")]
-y_sort_enabled = true
-position = Vector2(1017, 1083)
+[node name="Seller" parent="NPCs" instance=ExtResource("8_tp1qk")]
+position = Vector2(1435, 808)
+
+[node name="VillageChief" parent="NPCs" instance=ExtResource("9_vrayl")]
+position = Vector2(1401, 737)
 
 [editable path="Doors/Door_Village"]
 [editable path="Doors/Door_Start"]
