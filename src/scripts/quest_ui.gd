@@ -71,7 +71,7 @@ func _on_quest_selected(quest: Quest):
 	for reward in quest.rewards:
 		var label = Label.new()
 		label.add_theme_font_size_override("font_size", 8)
-		label.add_theme_color_override("font_color", Color(0, 0.84, 0))
+		label.add_theme_color_override("font_color", Color(0, 0, 0.5))
 		label.text = "Phần thưởng: " + reward.reward_type.capitalize() + ": " + str(reward.reward_amount)
 		quest_rewards.add_child(label) 
 

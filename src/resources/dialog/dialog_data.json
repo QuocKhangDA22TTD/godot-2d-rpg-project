@@ -56,6 +56,7 @@
 						"state": "start",
 						"text": "Xin chào.",
 						"options": {
+							"Nhận nhiệm vụ": "give_quest",
 							"Rời đi": "exit"
 						}
 					},
@@ -83,7 +84,7 @@
 	"người bán hàng": {
 		"trees": [
 			{
-				"branch_id": "chương 1",
+				"branch_id": "Chào Hỏi",
 				"dialogs": [
 					{
 						"state": "start",

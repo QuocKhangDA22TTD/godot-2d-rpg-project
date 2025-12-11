@@ -174,15 +174,22 @@ func is_item_needed(item_name: String) -> bool:
 	return false
 
 func check_quest_objectives(target_id: String, target_type: String, quantity: int = 1):
+	print("[DEBUG] check_quest_objectives được gọi với target_id=", target_id, ", target_type=", target_type, ", quantity=", quantity)
+	
 	var quests = quest_manager.get_active_quests()
+	print("[DEBUG] Số quest đang hoạt động: ", quests.size())
+	
 	if quests.is_empty():
 		print("Không có quest nào đang hoạt động")
 		return
 
 	for quest in quests:
+		print("[DEBUG] Kiểm tra quest: ", quest.quest_name, " (", quest.quest_id, ")")
 		var objective_updated = false
 		
 		for objective in quest.objectives:
+			print("[DEBUG] Objective: id=", objective.id, ", target_id=", objective.target_id, ", target_type=", objective.target_type, ", is_completed=", objective.is_completed)
+			
 			if objective.target_id == target_id and objective.target_type == target_type and not objective.is_completed:
 				print("Cập nhật mục tiêu - Quest: " + quest.quest_name + ", Target: " + target_id + ", Quantity trước: " + str(objective.collected_quantity))
 				quest.complete_objective(objective.id, quantity)

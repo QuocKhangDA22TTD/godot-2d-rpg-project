@@ -92,6 +92,7 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 8
 text = "Tiêu diệt 10 con quái
 than trong hầm mỏ"
+autowrap_mode = 3
 
 [node name="QuestObjectives" type="VBoxContainer" parent="CanvasLayer/Panel/Contents/Details/QuestDetail"]
 layout_mode = 2

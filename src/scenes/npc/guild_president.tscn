@@ -1,14 +1,47 @@
-[gd_scene load_steps=10 format=3 uid="uid://byceli8qr3yje"]
+[gd_scene load_steps=16 format=3 uid="uid://byceli8qr3yje"]
 
 [ext_resource type="Script" uid="uid://uou68lvjai4b" path="res://scripts/npc.gd" id="1_665ow"]
 [ext_resource type="Script" uid="uid://c2co2qs2lreh0" path="res://resources/dialog/dialog.gd" id="2_vcf78"]
 [ext_resource type="PackedScene" uid="uid://5hln4k6bnr5o" path="res://scenes/entity/dialog_manager.tscn" id="3_apba8"]
+[ext_resource type="Script" uid="uid://dtdohrmy65vlu" path="res://resources/quest/quests.gd" id="3_py3ku"]
 [ext_resource type="Texture2D" uid="uid://ct5ycbylk122g" path="res://assets/sprites/guld_president_idle.png" id="3_vcf78"]
+[ext_resource type="Script" uid="uid://cxicp0dg6wvkk" path="res://resources/quest/objectives.gd" id="4_37i2l"]
+[ext_resource type="Script" uid="uid://cbtad53lfxej5" path="res://resources/quest/rewards.gd" id="5_lr645"]
 
 [sub_resource type="Resource" id="Resource_apba8"]
 script = ExtResource("2_vcf78")
 dialogs = {}
 metadata/_custom_type_script = "uid://c2co2qs2lreh0"
+
+[sub_resource type="Resource" id="Resource_3j0u2"]
+script = ExtResource("4_37i2l")
+id = "tim_than"
+description = "Đi thu thập than"
+target_id = "Than đá"
+target_type = "Collection"
+objective_dialog = ""
+required_quantity = 3
+collected_quantity = 0
+is_completed = false
+metadata/_custom_type_script = "uid://cxicp0dg6wvkk"
+
+[sub_resource type="Resource" id="Resource_p0u3l"]
+script = ExtResource("5_lr645")
+reward_type = "coins"
+reward_amount = 3
+metadata/_custom_type_script = "uid://cbtad53lfxej5"
+
+[sub_resource type="Resource" id="Resource_s061t"]
+script = ExtResource("3_py3ku")
+quest_id = "nhiem_vu_1"
+quest_name = "Thu thập"
+quest_description = "Kiếm cho thị trưởng 3 cục than, sau khi hàn thành xong nhiệm vụ bạn sẽ nhận được 3 coin"
+state = "not_started"
+unlock_id = "nhận nhiệm vụ"
+objectives = Array[ExtResource("4_37i2l")]([SubResource("Resource_3j0u2")])
+rewards = Array[ExtResource("5_lr645")]([SubResource("Resource_p0u3l")])
+is_repeatable = true
+metadata/_custom_type_script = "uid://dtdohrmy65vlu"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_apba8"]
 atlas = ExtResource("3_vcf78")
@@ -41,6 +74,7 @@ script = ExtResource("1_665ow")
 npc_id = "hội trưởng"
 npc_name = "Hội trưởng hội mạo hiểm giả"
 dialog_resource = SubResource("Resource_apba8")
+quests = Array[ExtResource("3_py3ku")]([SubResource("Resource_s061t")])
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_31182")
