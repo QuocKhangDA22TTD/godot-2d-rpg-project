@@ -1,7 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://kxykv70vg2ud"]
+[gd_scene load_steps=10 format=3 uid="uid://kxykv70vg2ud"]
 
 [ext_resource type="Texture2D" uid="uid://55wstqdxj33" path="res://assets/sprites/soldier.png" id="1_17qwi"]
-[ext_resource type="Script" uid="uid://bumhr5s0jlx72" path="res://scripts/soldier.gd" id="1_jd6in"]
+[ext_resource type="Script" uid="uid://uou68lvjai4b" path="res://scripts/npc.gd" id="1_jd6in"]
+[ext_resource type="Script" uid="uid://c2co2qs2lreh0" path="res://resources/dialog/dialog.gd" id="2_dialog"]
+[ext_resource type="PackedScene" uid="uid://5hln4k6bnr5o" path="res://scenes/entity/dialog_manager.tscn" id="3_dialog_manager"]
+
+[sub_resource type="Resource" id="Resource_dialog"]
+script = ExtResource("2_dialog")
+dialogs = {}
+metadata/_custom_type_script = "uid://c2co2qs2lreh0"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jd6in"]
 atlas = ExtResource("1_17qwi")
@@ -25,8 +32,15 @@ animations = [{
 "speed": 4.0
 }]
 
-[node name="Soldier" type="Node2D" groups=["NPC"]]
+[sub_resource type="CircleShape2D" id="CircleShape2D_soldier"]
+radius = 3.0
+
+[node name="Soldier" type="CharacterBody2D" groups=["NPC"]]
+collision_layer = 5
 script = ExtResource("1_jd6in")
+npc_id = "lính canh"
+npc_name = "Lính canh"
+dialog_resource = SubResource("Resource_dialog")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_wri2k")
@@ -34,3 +48,8 @@ animation = &"idle"
 autoplay = "idle"
 frame_progress = 0.657569
 offset = Vector2(0, -13)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_soldier")
+
+[node name="DialogManager" parent="." instance=ExtResource("3_dialog_manager")]

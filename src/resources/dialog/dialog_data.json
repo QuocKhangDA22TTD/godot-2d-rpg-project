@@ -135,5 +135,40 @@
 				]
 			}
 		]
+	},
+	"lính canh": {
+		"trees": [
+			{
+				"branch_id": "npc_default",
+				"dialogs": [
+					{
+						"state": "start",
+						"text": "Tôi đang canh gác ở đây. Có chuyện gì không?",
+						"options": {
+							"Hỏi về làng": "ask_village",
+							"Rời đi": "exit"
+						}
+					},
+					{
+						"state": "ask_village",
+						"text": "Làng này khá yên bình. Cậu nên đi gặp trưởng làng nếu cần giúp đỡ gì.",
+						"options": {
+							"Cảm ơn": "exit",
+							"Rời đi": "exit"
+						}
+					},
+					{
+						"state": "exit",
+						"text": "",
+						"options": {}
+					},
+					{
+						"state": "end",
+						"text": "",
+						"options": {}
+					}
+				]
+			}
+		]
 	}
 }

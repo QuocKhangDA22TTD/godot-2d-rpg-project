@@ -345,7 +345,7 @@ position = Vector2(776, 100)
 
 [node name="Soldier2" parent="." instance=ExtResource("5_joqnj")]
 position = Vector2(841, 100)
-is_flip_h = true
+scale = Vector2(-1, 1)
 
 [node name="Doors" type="Node" parent="."]
 
