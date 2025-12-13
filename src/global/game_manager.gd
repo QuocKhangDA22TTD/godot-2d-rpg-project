@@ -247,3 +247,48 @@ func save_game(data):
 	var file = FileAccess.open("user://savegame.save", FileAccess.WRITE)
 	file.store_string(json)
 	file.close()
+
+func reset_all_game_data():
+	"""Xóa toàn bộ dữ liệu game và tạo dữ liệu mặc định mới"""
+	print("Đang reset toàn bộ dữ liệu game...")
+	
+	# Xóa các file save
+	var save_files = [
+		"user://savegame.save",
+		"user://inventory.save", 
+		"user://quests.save"
+	]
+	
+	for file_path in save_files:
+		if FileAccess.file_exists(file_path):
+			var dir = DirAccess.open("user://")
+			if dir:
+				dir.remove(file_path.get_file())
+				print("Đã xóa file: ", file_path)
+	
+	# Reset inventory trong Global
+	Global.inventory.clear()
+	Global.inventory.resize(24)
+	
+	# Reset player reference
+	if Global.player:
+		Global.player = null
+	
+	# Reset game manager state
+	game_over = false
+	
+	# Tạo dữ liệu player mặc định
+	var default_player_data = {
+		"scene": "res://scenes/map/main_map.tscn",
+		"x": 808.0,
+		"y": 24.0,
+		"health": 5.0,
+		"max_health": 5.0,
+		"coins": 0
+	}
+	
+	# Lưu dữ liệu mặc định
+	save_game(default_player_data)
+	save_inventory(Global.inventory)
+	
+	print("Đã reset toàn bộ dữ liệu game thành công!")

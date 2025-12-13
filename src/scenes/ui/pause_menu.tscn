@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cpfpnm2uo6tdw"]
+[gd_scene load_steps=3 format=3 uid="uid://cpfpnm2uo6tdw"]
 
 [ext_resource type="Script" uid="uid://b8dlyhu61wmv4" path="res://scripts/pause_menu.gd" id="1_6tw0m"]
+[ext_resource type="PackedScene" uid="uid://cy0th2qvkmn8y" path="res://scenes/ui/option_ui.tscn" id="2_option"]
 
 [node name="PauseMenu" type="CanvasLayer"]
 process_mode = 3
@@ -30,15 +31,24 @@ grow_vertical = 2
 
 [node name="Resume" type="Button" parent="Control/VBoxContainer"]
 layout_mode = 2
-text = "RESUME"
+text = "Tiếp tục"
 
 [node name="Option" type="Button" parent="Control/VBoxContainer"]
 layout_mode = 2
-text = "OPTION"
+text = "Cài đặt"
+
+[node name="SaveAndQuit" type="Button" parent="Control/VBoxContainer"]
+layout_mode = 2
+text = "Lưu và thoát"
 
 [node name="Quit" type="Button" parent="Control/VBoxContainer"]
 layout_mode = 2
-text = "QUIT"
+text = "Thoát không lưu"
+
+[node name="OptionUI" parent="." instance=ExtResource("2_option")]
+visible = false
 
 [connection signal="pressed" from="Control/VBoxContainer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Option" to="." method="_on_option_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/SaveAndQuit" to="." method="_on_save_and_quit_pressed"]
 [connection signal="pressed" from="Control/VBoxContainer/Quit" to="." method="_on_quit_pressed"]

@@ -4,6 +4,11 @@ var player = null
 var facing = false
 var inventory = []
 
+# Loading screen variables
+var loading_target_scene: String = ""
+var loading_is_new_game: bool = false
+var loading_from_pause: bool = false
+
 @onready var inventory_slot_scene = preload("res://scenes/ui/inventory_slot.tscn")
 
 signal inventory_updated

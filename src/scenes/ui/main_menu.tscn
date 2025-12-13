@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://6abxydid4np0"]
+[gd_scene load_steps=3 format=3 uid="uid://6abxydid4np0"]
 
 [ext_resource type="Script" uid="uid://dhyf7t0g6doej" path="res://scripts/main_menu.gd" id="1_sl1te"]
+[ext_resource type="PackedScene" uid="uid://cy0th2qvkmn8y" path="res://scenes/ui/option_ui.tscn" id="2_option"]
 
 [node name="MainMenu" type="Control"]
 process_mode = 3
@@ -28,17 +29,25 @@ grow_vertical = 2
 
 [node name="StartGame" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-text = "START GAME"
+text = "Tiếp tục"
+
+[node name="NewGame" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Trò chơi mới"
 
 [node name="Option" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-text = "OPTION
-"
+text = "Cài đặt"
 
 [node name="Exit" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-text = "EXIT
-"
+text = "Thoát"
+
+[node name="OptionUI" parent="." instance=ExtResource("2_option")]
+visible = false
+layout_mode = 1
 
 [connection signal="pressed" from="VBoxContainer/StartGame" to="." method="_on_start_game_pressed"]
+[connection signal="pressed" from="VBoxContainer/NewGame" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="VBoxContainer/Option" to="." method="_on_option_pressed"]
 [connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]
