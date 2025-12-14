@@ -67,7 +67,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"run",
-"speed": 6.0
+"speed": 8.0
 }]
 
 [sub_resource type="Animation" id="Animation_lvxji"]
@@ -124,8 +124,7 @@ script = ExtResource("1_dovo2")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_p47bc")
 sprite_frames = SubResource("SpriteFrames_hvfru")
-animation = &"idle"
-frame_progress = 0.209131
+animation = &"run"
 offset = Vector2(0, -11)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AnimatedSprite2D"]

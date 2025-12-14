@@ -8,6 +8,10 @@ var max_health = 5.0
 var can_move = true
 var coin_amount = 0
 
+# Footstep sound variables
+var last_footstep_frame = -1
+var footstep_frames = [1, 3]  # Frames khi phát âm thanh bước chân
+
 @onready var anima = $AnimatedSprite2D
 @onready var colli = $CollisionShape2D
 @onready var weapon = $Weapon
@@ -50,6 +54,9 @@ func _ready():
 		print("Đã tải inventory từ file: ", loaded_inventory.size(), " slots")
 	
 	update_coins()
+	
+	# Kết nối signal để theo dõi frame animation
+	anima.frame_changed.connect(_on_animation_frame_changed)
 
 func _physics_process(delta: float) -> void:
 	if GameManager.game_over:
@@ -81,24 +88,54 @@ func player_movement():
 	
 	velocity = dir * speed
 
-func player_animation():	
-	if velocity != Vector2.ZERO and Global.facing == false:
-		if velocity.x < 0:
-			anima.flip_h = true
-		if velocity.x > 0:
-			anima.flip_h = false
-		anima.play("run")
-	elif Global.facing == true:
-		var mouse_pos = get_global_mouse_position()
-		if mouse_pos.x < global_position.x:
-			anima.flip_h = true
-			weapon.scale = Vector2(-1, 1)
-		if mouse_pos.x > global_position.x:
-			anima.flip_h = false
-			weapon.scale = Vector2(1, 1)
-		anima.play("run")
+func player_animation():
+	"""Quản lý animation và hướng của player"""
+	if _is_moving() and not Global.facing:
+		_handle_movement_animation()
+	elif Global.facing:
+		_handle_combat_animation()
 	else:
-		anima.play("idle")
+		_play_idle_animation()
+
+func _is_moving() -> bool:
+	"""Kiểm tra xem player có đang di chuyển không"""
+	return velocity != Vector2.ZERO
+
+func _handle_movement_animation():
+	"""Xử lý animation khi di chuyển"""
+	_set_sprite_direction_from_velocity()
+	anima.play("run")
+
+func _handle_combat_animation():
+	"""Xử lý animation khi đang trong chế độ combat (facing)"""
+	_set_sprite_direction_from_mouse()
+	_set_weapon_direction_from_mouse()
+	anima.play("run")
+
+func _play_idle_animation():
+	"""Phát animation idle"""
+	anima.play("idle")
+	_reset_footstep_tracking()
+
+func _set_sprite_direction_from_velocity():
+	"""Set hướng sprite dựa trên velocity"""
+	if velocity.x < 0:
+		anima.flip_h = true
+	elif velocity.x > 0:
+		anima.flip_h = false
+
+func _set_sprite_direction_from_mouse():
+	"""Set hướng sprite dựa trên vị trí chuột"""
+	var mouse_pos = get_global_mouse_position()
+	anima.flip_h = mouse_pos.x < global_position.x
+
+func _set_weapon_direction_from_mouse():
+	"""Set hướng weapon dựa trên vị trí chuột"""
+	var mouse_pos = get_global_mouse_position()
+	if mouse_pos.x < global_position.x:
+		weapon.scale = Vector2(-1, 1)
+	else:
+		weapon.scale = Vector2(1, 1)
 
 func load_position(data: Dictionary):
 	global_position.x = data["x"]
@@ -223,3 +260,27 @@ func handle_quest_completion(quest: Quest):
 
 func update_coins():
 	coin_amount_label.text = str(coin_amount)
+
+func _on_animation_frame_changed():
+	"""Xử lý khi frame animation thay đổi - phát âm thanh bước chân"""
+	# Chỉ phát âm thanh khi đang chạy animation "run" và thực sự đang di chuyển
+	if anima.animation != "run" or not _is_moving():
+		return
+	
+	var current_frame = anima.frame
+	
+	# Kiểm tra xem có phải frame cần phát âm thanh không (frame 0 và 2)
+	if current_frame in footstep_frames:
+		# Tránh phát âm thanh trùng lặp cho cùng một frame
+		if current_frame != last_footstep_frame:
+			_play_footstep_sound()
+			last_footstep_frame = current_frame
+			print("[Player] Footstep sound played at frame: ", current_frame)
+
+func _play_footstep_sound():
+	"""Phát âm thanh bước chân trên đất"""
+	AudioManager.play_sfx("dirt_footstep")
+
+func _reset_footstep_tracking():
+	"""Reset tracking footstep khi thay đổi animation"""
+	last_footstep_frame = -1
