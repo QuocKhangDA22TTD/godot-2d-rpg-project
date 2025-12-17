@@ -18,25 +18,39 @@ texture = ExtResource("1_qvs5h")
 19:0/0 = 0
 19:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 17:1/0 = 0
+17:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-5, -8, 8, -8, 8, 0, 1, 0, 1, 1, 0, 1, 0, 8, -5, 8)
 18:1/0 = 0
 18:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 0.0782852, -8, 0.0391426)
 19:1/0 = 0
+19:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(5, -8, -8, -8, -8, 0, -1, 0, -1, 1, 0, 1, 0, 8, 5, 8)
 19:2/0 = 0
+19:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(5, -8, 0, -8, 0, 8, 5, 8)
 18:2/0 = 0
 17:2/0 = 0
+17:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-5, -8, 0, -8, 0, 8, -5, 8)
 17:3/0 = 0
+17:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-5, -8, 0, -8, 0, -1, 8, -1, 8, 6, -5, 6)
 18:3/0 = 0
+18:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -1, -8, -1, -8, 6, 8, 6)
 19:3/0 = 0
+19:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(5, -8, 0, -8, 0, -1, -8, -1, -8, 6, 5, 6)
 16:4/0 = 0
 17:4/0 = 0
+17:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -1, 2, -1, 2, 0, 1, 0, 1, 1, 0, 1, 0, 2, 0, 8, 2, 8, 8, 8)
 18:4/0 = 0
+18:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -1, -2, -1, -2, 0, -1, 0, -1, 1, 0, 1, 0, 2, 0, 8, -2, 8, -8, 8)
 18:5/0 = 0
+18:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 0, -2, 0, -2, -1, -1, -1, -1, -2, 0, -2, 0, -8, -2, -8, -8, -8)
 17:5/0 = 0
+17:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, 0, 2, 0, 2, -1, 1, -1, 1, -2, 0, -2, 0, -8, 2, -8, 8, -8)
 17:6/0 = 0
+17:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(5, 0, 5, 1, 6, 1, 6, 2, 7, 2, 8, 2, 8, 8, 0, 8, 0, -8, 5, -8)
 18:6/0 = 0
+18:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-5, 0, -5, 1, -6, 1, -6, 2, -7, 2, -8, 2, -8, 8, 0, 8, 0, -8, -5, -8)
 
 [sub_resource type="TileSet" id="TileSet_fmjld"]
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 3
+physics_layer_0/collision_mask = 3
 sources/0 = SubResource("TileSetAtlasSource_ii35b")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vey02"]

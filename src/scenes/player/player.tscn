@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://dtim1o3446cn" path="res://assets/sprites/characters.png" id="1_8afob"]
 [ext_resource type="Script" uid="uid://djefui0ud08ix" path="res://scripts/player.gd" id="1_dovo2"]
 [ext_resource type="Shader" uid="uid://cg60x1urggnub" path="res://shader/hit_flash.gdshader" id="2_lvxji"]
-[ext_resource type="PackedScene" uid="uid://cimksycqkx7cd" path="res://scenes/entity/sword.tscn" id="4_lvxji"]
+[ext_resource type="PackedScene" uid="uid://bedtgofl2uli4" path="res://scenes/entity/sword.tscn" id="4_lvxji"]
 [ext_resource type="PackedScene" uid="uid://ceygykysgliy7" path="res://scenes/ui/health_bar.tscn" id="5_0owmy"]
 [ext_resource type="PackedScene" uid="uid://de0fi336wwjlj" path="res://scenes/ui/inventory_ui.tscn" id="5_p47bc"]
 [ext_resource type="Texture2D" uid="uid://b505or0e1jjpi" path="res://assets/ui/ui.png" id="6_75vfm"]
