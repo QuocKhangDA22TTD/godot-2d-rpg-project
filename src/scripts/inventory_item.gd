@@ -30,6 +30,8 @@ func pickup_item():
 	if Global.player == null:
 		return
 	
+	AudioManager.play_sfx("pick_up_item")
+	
 	# Kiểm tra xem item này có được yêu cầu bởi bất kỳ quest nào không
 	if Global.player.is_item_needed(item_name):
 		# Item này cần cho quest - không thêm vào inventory mà gọi check_quest_objectives

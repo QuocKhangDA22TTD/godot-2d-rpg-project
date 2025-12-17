@@ -17,10 +17,12 @@ func _ready() -> void:
 	# Load audio resources
 	sfx["slash"] = preload("res://assets/audio/sfx/sword_sound_edit.wav")
 	sfx["hit"] = preload("res://assets/audio/sfx/hit_edit.wav")
-	# Thêm âm thanh bước chân (sử dụng âm thanh có sẵn hoặc tạo mới)
 	sfx["dirt_footstep"] = preload("res://assets/audio/sfx/dirt_footstep_edit.wav")
-	music["village_1"] = preload("res://assets/audio/music/background_music_village_1.wav")
+	sfx["player_damaged"] = preload("res://assets/audio/sfx/player_damaged_edit.wav")
+	sfx["open_dialog"] = preload("res://assets/audio/sfx/open_dialog_edit.wav")
+	sfx["pick_up_item"] = preload("res://assets/audio/sfx/pick_up_item_edit.wav")
 	# Thêm nhạc menu (sử dụng cùng nhạc village_1 hoặc có thể thêm nhạc riêng)
+	music["village_1"] = preload("res://assets/audio/music/background_music_village_1.wav")
 	music["menu"] = preload("res://assets/audio/music/background_music_village_1.wav")
 	
 	# Khởi tạo SFX players

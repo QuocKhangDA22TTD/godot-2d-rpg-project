@@ -156,6 +156,7 @@ func take_damaged(amount):
 	
 	health -= amount
 	anim_player.play("hit")
+	AudioManager.play_sfx("player_damaged")
 	change_health_label()
 	
 	if health <= 0:
@@ -184,6 +185,7 @@ func _input(event: InputEvent) -> void:
 				if target.is_in_group("NPC"):
 					can_move = false
 					target.start_dialog()
+					AudioManager.play_sfx("open_dialog")
 					check_quest_objectives(target.npc_id, "talk_to")
 				elif target.is_in_group("Items"):
 					# Gọi pickup_item từ inventory_item.gd để xử lý
@@ -266,6 +268,9 @@ func _on_animation_frame_changed():
 	# Chỉ phát âm thanh khi đang chạy animation "run" và thực sự đang di chuyển
 	if anima.animation != "run" or not _is_moving():
 		return
+	
+	if not can_move:
+		_play_idle_animation()
 	
 	var current_frame = anima.frame
 	
