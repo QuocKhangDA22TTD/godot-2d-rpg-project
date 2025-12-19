@@ -7,6 +7,8 @@ var max_health = 5.0
 #var is_open_inventory = false # Để đây một thời gian xem có chuyện gì xảy ra không, nếu không có thì bỏ dòng này
 var can_move = true
 var coin_amount = 0
+var is_attacking = false
+var facing_direction = Vector2.RIGHT  # Hướng mặt của player
 
 # Footstep sound variables
 var last_footstep_frame = -1
@@ -22,6 +24,10 @@ var footstep_frames = [1, 3]  # Frames khi phát âm thanh bước chân
 @onready var ray_cast_2d = $RayCast2D
 @onready var quest_manager = $QuestManager
 @onready var coin_amount_label = $HUD/CoinAmount
+@onready var weapon_pivot = $WeaponPivot
+@onready var weapon_handler = $WeaponHandler
+@onready var weapon_sprite = $WeaponPivot/WeaponSprite
+@onready var weapon_anim = $WeaponPivot/AnimationPlayer
 
 signal died
 
@@ -44,7 +50,6 @@ func _ready():
 	#Global.player.health = data["health"]
 	anim_player.play("RESET")
 	anima.play("idle")
-	Global.facing = false
 	health_label.text = "Máu: " + str(health)
 	
 	# Load inventory từ file
@@ -76,6 +81,7 @@ func _physics_process(delta: float) -> void:
 		player_movement()
 		player_animation()
 		move_and_slide()
+		_handle_attack()
 		
 		if velocity != Vector2.ZERO:
 			ray_cast_2d.target_position = velocity.normalized() * 15
@@ -89,53 +95,21 @@ func player_movement():
 	velocity = dir * speed
 
 func player_animation():
-	"""Quản lý animation và hướng của player"""
-	if _is_moving() and not Global.facing:
-		_handle_movement_animation()
-	elif Global.facing:
-		_handle_combat_animation()
+	# Chỉ cập nhật hướng khi không đang tấn công
+	if not is_attacking:
+		if velocity.x < 0:
+			anima.flip_h = true
+			facing_direction = Vector2.LEFT
+		elif velocity.x > 0:
+			anima.flip_h = false
+			facing_direction = Vector2.RIGHT
+	
+	# Animation đơn giản
+	if velocity != Vector2.ZERO:
+		anima.play("run")
 	else:
-		_play_idle_animation()
-
-func _is_moving() -> bool:
-	"""Kiểm tra xem player có đang di chuyển không"""
-	return velocity != Vector2.ZERO
-
-func _handle_movement_animation():
-	"""Xử lý animation khi di chuyển"""
-	_set_sprite_direction_from_velocity()
-	anima.play("run")
-
-func _handle_combat_animation():
-	"""Xử lý animation khi đang trong chế độ combat (facing)"""
-	_set_sprite_direction_from_mouse()
-	_set_weapon_direction_from_mouse()
-	anima.play("run")
-
-func _play_idle_animation():
-	"""Phát animation idle"""
-	anima.play("idle")
-	_reset_footstep_tracking()
-
-func _set_sprite_direction_from_velocity():
-	"""Set hướng sprite dựa trên velocity"""
-	if velocity.x < 0:
-		anima.flip_h = true
-	elif velocity.x > 0:
-		anima.flip_h = false
-
-func _set_sprite_direction_from_mouse():
-	"""Set hướng sprite dựa trên vị trí chuột"""
-	var mouse_pos = get_global_mouse_position()
-	anima.flip_h = mouse_pos.x < global_position.x
-
-func _set_weapon_direction_from_mouse():
-	"""Set hướng weapon dựa trên vị trí chuột"""
-	var mouse_pos = get_global_mouse_position()
-	if mouse_pos.x < global_position.x:
-		weapon.scale = Vector2(-1, 1)
-	else:
-		weapon.scale = Vector2(1, 1)
+		anima.play("idle")
+		_reset_footstep_tracking()
 
 func load_position(data: Dictionary):
 	global_position.x = data["x"]
@@ -266,11 +240,12 @@ func update_coins():
 func _on_animation_frame_changed():
 	"""Xử lý khi frame animation thay đổi - phát âm thanh bước chân"""
 	# Chỉ phát âm thanh khi đang chạy animation "run" và thực sự đang di chuyển
-	if anima.animation != "run" or not _is_moving():
+	if anima.animation != "run" or velocity == Vector2.ZERO:
 		return
 	
 	if not can_move:
-		_play_idle_animation()
+		anima.play("idle")
+		_reset_footstep_tracking()
 	
 	var current_frame = anima.frame
 	
@@ -289,3 +264,7 @@ func _play_footstep_sound():
 func _reset_footstep_tracking():
 	"""Reset tracking footstep khi thay đổi animation"""
 	last_footstep_frame = -1
+
+func _handle_attack():
+	if Input.is_action_just_pressed("attack"):
+		weapon_handler.attack(self, facing_direction)

@@ -1,7 +1,6 @@
 extends Node
 
 var player = null
-var facing = false
 var inventory = []
 
 # Loading screen variables

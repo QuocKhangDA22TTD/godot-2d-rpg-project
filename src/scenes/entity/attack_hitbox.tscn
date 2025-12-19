@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://mid3njssosfr"]
+
+[ext_resource type="Script" uid="uid://dmhbk8qfgquem" path="res://scripts/attack_hitbox.gd" id="1_kg87b"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2d13j"]
+
+[node name="AttackHitbox" type="Area2D"]
+script = ExtResource("1_kg87b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(1.5, 1.5)
+shape = SubResource("RectangleShape2D_2d13j")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

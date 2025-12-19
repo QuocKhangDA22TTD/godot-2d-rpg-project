@@ -1,18 +1,16 @@
-[gd_scene load_steps=32 format=3 uid="uid://ckjd4al0n7snv"]
+[gd_scene load_steps=26 format=3 uid="uid://ckjd4al0n7snv"]
 
 [ext_resource type="Texture2D" uid="uid://dtim1o3446cn" path="res://assets/sprites/characters.png" id="1_8afob"]
 [ext_resource type="Script" uid="uid://djefui0ud08ix" path="res://scripts/player.gd" id="1_dovo2"]
 [ext_resource type="Shader" uid="uid://cg60x1urggnub" path="res://shader/hit_flash.gdshader" id="2_lvxji"]
+[ext_resource type="PackedScene" uid="uid://bedtgofl2uli4" path="res://scenes/entity/sword.tscn" id="4_lvxji"]
 [ext_resource type="PackedScene" uid="uid://ceygykysgliy7" path="res://scenes/ui/health_bar.tscn" id="5_0owmy"]
 [ext_resource type="PackedScene" uid="uid://de0fi336wwjlj" path="res://scenes/ui/inventory_ui.tscn" id="5_p47bc"]
 [ext_resource type="Texture2D" uid="uid://b505or0e1jjpi" path="res://assets/ui/ui.png" id="6_75vfm"]
 [ext_resource type="PackedScene" uid="uid://dfyt2gwxrlywa" path="res://scenes/ui/dialog_ui.tscn" id="8_qek5x"]
 [ext_resource type="PackedScene" uid="uid://doh0frg5abefl" path="res://scenes/entity/quest_manager.tscn" id="9_5gtgg"]
-[ext_resource type="Texture2D" uid="uid://dgdskanfi6uj5" path="res://assets/sprites/sword/sword.png" id="9_fm80t"]
 [ext_resource type="Script" uid="uid://da7fognlcf452" path="res://scripts/weapon_handler.gd" id="9_h17s1"]
-[ext_resource type="PackedScene" uid="uid://mid3njssosfr" path="res://scenes/entity/attack_hitbox.tscn" id="10_je7p5"]
 [ext_resource type="Script" uid="uid://cuaux44l13dhn" path="res://scripts/weapon_data.gd" id="11_je7p5"]
-[ext_resource type="PackedScene" uid="uid://rkg0th846sth" path="res://scenes/entity/slash_effect.tscn" id="13_gx1jg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_p47bc"]
 shader = ExtResource("2_lvxji")
@@ -119,144 +117,15 @@ radius = 3.0
 atlas = ExtResource("6_75vfm")
 region = Rect2(16, 16, 224, 160)
 
-[sub_resource type="Animation" id="Animation_fm80t"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("WeaponSprite:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -6)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("WeaponSprite:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(0),
-"update": 0,
-"values": [0.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("WeaponSprite:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(0),
-"update": 1,
-"values": [false]
-}
-
-[sub_resource type="Animation" id="Animation_gx1jg"]
-resource_name = "left_slash"
-length = 0.25
-step = 0.0333
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("WeaponSprite:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 6)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("WeaponSprite:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.15),
-"transitions": PackedFloat32Array(-0.5, 0),
-"update": 0,
-"values": [2.79253, -0.349066]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("WeaponSprite:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.25),
-"transitions": PackedFloat32Array(0, 0),
-"update": 1,
-"values": [true, false]
-}
-
-[sub_resource type="Animation" id="Animation_je7p5"]
-resource_name = "slash"
-length = 0.25
-step = 0.0333
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("WeaponSprite:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -6)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("WeaponSprite:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.15),
-"transitions": PackedFloat32Array(-0.5, 0),
-"update": 0,
-"values": [-0.349066, 2.79253]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("WeaponSprite:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.25),
-"transitions": PackedFloat32Array(0, 0),
-"update": 1,
-"values": [true, false]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_gx1jg"]
-_data = {
-&"RESET": SubResource("Animation_fm80t"),
-&"left_slash": SubResource("Animation_gx1jg"),
-&"right_slash": SubResource("Animation_je7p5")
-}
-
 [sub_resource type="Resource" id="Resource_fm80t"]
 script = ExtResource("11_je7p5")
 name = "Sword"
-damage = 2
-knockback = 650.0
-hitbox_scene = ExtResource("10_je7p5")
-slash_effect_scene = ExtResource("13_gx1jg")
+damage = 1
+knockback = 120.0
+hitbox_scene = ExtResource("4_lvxji")
 windup_time = 0.1
 active_time = 0.15
-recovery_time = 0.25
+recovery_time = 0.2
 metadata/_custom_type_script = "uid://cuaux44l13dhn"
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
@@ -372,15 +241,8 @@ collide_with_areas = true
 [node name="WeaponPivot" type="Node2D" parent="."]
 
 [node name="WeaponSprite" type="Sprite2D" parent="WeaponPivot"]
-visible = false
-position = Vector2(0, -6)
-texture = ExtResource("9_fm80t")
-offset = Vector2(0, -16)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="WeaponPivot"]
-libraries = {
-&"": SubResource("AnimationLibrary_gx1jg")
-}
 
 [node name="WeaponHandler" type="Node" parent="."]
 script = ExtResource("9_h17s1")
