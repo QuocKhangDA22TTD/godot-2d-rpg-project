@@ -39,7 +39,7 @@ func _spawn_hitbox(player, facing):
 	hitbox.knockback = weapon_data.knockback
 	
 	var slash_fx = weapon_data.slash_effect_scene.instantiate()
-	slash_fx.global_position = hitbox.global_position + facing * 12
+	slash_fx.global_position = hitbox.global_position + facing * 6
 	slash_fx.rotation = facing.angle()
 	
 	print("[WeaponHandler] Spawning slash effect at: ", slash_fx.global_position)
