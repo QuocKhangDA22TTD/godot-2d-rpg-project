@@ -1,5 +1,12 @@
 extends Node
 
+enum GameState {
+	GAMEPLAY,
+	CUTSCENE
+}
+
+var state: GameState = GameState.GAMEPLAY
+
 var player_scene = preload("res://scenes/player/player.tscn")
 var player = null
 var game_over = false
@@ -292,3 +299,6 @@ func reset_all_game_data():
 	save_inventory(Global.inventory)
 	
 	print("Đã reset toàn bộ dữ liệu game thành công!")
+
+func is_gameplay() -> bool:
+	return state == GameState.GAMEPLAY

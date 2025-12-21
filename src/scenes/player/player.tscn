@@ -360,6 +360,7 @@ text = "Bấm E để nhặt"
 visible = false
 
 [node name="DialogUI" parent="DialogUI" instance=ExtResource("8_qek5x")]
+visible = false
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 target_position = Vector2(0, 15)

@@ -10,6 +10,10 @@ func _ready() -> void:
 	hide_dialog()
 
 func show_dialog(speaker, text, options):
+	close_button.visible = true
+	if GameManager.state == GameManager.GameState.CUTSCENE:
+		close_button.visible = false
+	
 	panel.visible = true
 	
 	dialog_speaker.text = speaker

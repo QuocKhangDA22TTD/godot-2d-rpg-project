@@ -5,6 +5,7 @@ var npc: Node = null
 @onready var dialog_ui = $DialogUI
 
 func show_dialog(npc, text = "", options = {}):
+	AudioManager.play_sfx("open_dialog")
 	if text != "":
 		dialog_ui.show_dialog(npc.npc_name, text, options)
 	else:

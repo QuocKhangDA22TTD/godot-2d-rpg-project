@@ -22,6 +22,7 @@ NavigationManager="*res://global/navigation_manager.gd"
 TransitionScreen="*res://scenes/ui/transition_screen.tscn"
 PauseMenu="*res://scenes/ui/pause_menu.tscn"
 AudioManager="*res://global/audio_manager.tscn"
+CutsceneManager="*res://global/cutscene_manager.tscn"
 
 [display]
 

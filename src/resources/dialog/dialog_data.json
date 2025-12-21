@@ -2,6 +2,70 @@
 	"trưởng làng": {
 		"trees": [
 			{
+				"branch_id": "Chào hỏi mở đầu",
+				"dialogs": [
+					{
+						"state": "Hỏi người chơi về nơi ở",
+						"text": "Xin chào, bạn có phải là người từ xa đến đây phải không?",
+						"options": {
+							"Vâng, tôi là người từ xa tới đây để làm mạo hiểm giả, tôi nghe nói công việc này kiếm được rất nhiều tiền": "Giới thiệu bản thân" 
+						}
+					},
+					{
+						"state": "Giới thiệu bản thân",
+						"text": "Bạn đã chọn đúng nơi đến, tôi là trưởng làng của ngôi làng này, đây là ngôi làng được nhiều mạo hiểm giả chọn để bắt đầu cuộc phiêu lưu!",
+						"options": {
+							"Tiếp theo": "Chỉ chỗ trọ"
+						}
+					},
+					{
+						"state": "hướng dẫn bản đồ",
+						"text": "Để tôi dẫn bạn đi thăm quan ngôi làng",
+						"options": {
+							"Tiếp theo": "Nhà trọ"
+						}
+					},
+					{
+						"state": "Nhà trọ",
+						"text": "Từ cửa làng đi về hướng nam, sẽ là nơi cho thuê trọ.",
+						"options": {
+							"Tiếp theo": "Hầm ngục"
+						}
+					},
+					{
+						"state": "Hầm ngục",
+						"text": "Các vật phẩm bạn kiếm được có thể dùng để trao đổi và buôn bán tại các gian hàng ở phía đông nam ngôi làng.",
+						"options": {
+							"Tiếp theo": "Tạm biệt"
+						}
+					},
+					{
+						"state": "Tạm biệt",
+						"text": "Đây là tất cả những gì tôi giới thiệu, nếu bạn có vấn đề gì thì cứ đến gặp tôi ở nhà trưởng làng.",
+						"options": {
+							"Tiếp theo": "Lời kết"
+						}
+					},
+					{
+						"state": "Lời kết",
+						"text": "Cũng đã muộn rồi, bạn hãy về trọ của mình và chuẩn bị hàng trang để tuân hưởng cuộc phiêu lưu của bản thân, tạm biệt và hẹn gặp lại.",
+						"options": {
+							"Rời đi": "exit"
+						}
+					}
+				]
+			},
+			{
+				"branch_id": "Giới thiệu nơi ở",
+				"dialogs": [
+					{
+						"state": "Nói về căn phòng",
+						"text": "Đây là căn phòng thường dành cho mạo hiểm giả như cậu",
+						"options": {}
+					},
+				]
+			},
+			{
 				"branch_id": "chào hỏi",
 				"dialogs": [
 					{

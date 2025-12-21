@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+var speed = 60.0
+
 var current_state = "start"
 var current_branch_index = 0
 
@@ -104,3 +106,11 @@ func get_quest_dialog() -> Dictionary:
 				if current_state == "start":
 					return {"text": objective.objective_dialog, "options": {"Rời đi": "exit"}}
 	return {"text": "", "options": {}}
+
+func move_to(target: Vector2) -> void:
+	while global_position.distance_to(target) > 2:
+		velocity = (target - global_position).normalized() * speed
+		move_and_slide()
+		await get_tree().physics_frame
+		
+	velocity = Vector2.ZERO

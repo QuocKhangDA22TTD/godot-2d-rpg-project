@@ -6,6 +6,8 @@ func _ready() -> void:
 		_on_level_spawn(NavigationManager.spawn_door_tag)
 	
 	AudioManager.play_music("village_1")
+	
+	await CutsceneManager.play("intro")
 
 func _on_level_spawn(destination_tag: String):
 	var door_path = "Doors/Door_" + destination_tag

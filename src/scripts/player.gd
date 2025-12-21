@@ -77,7 +77,7 @@ func _physics_process(delta: float) -> void:
 	if get_tree().paused:
 		anima.pause()
 		return
-	if can_move:
+	if can_move and GameManager.state == 0:
 		player_movement()
 		player_animation()
 		move_and_slide()
@@ -159,7 +159,6 @@ func _input(event: InputEvent) -> void:
 				if target.is_in_group("NPC"):
 					can_move = false
 					target.start_dialog()
-					AudioManager.play_sfx("open_dialog")
 					check_quest_objectives(target.npc_id, "talk_to")
 				elif target.is_in_group("Items"):
 					# Gọi pickup_item từ inventory_item.gd để xử lý
@@ -268,3 +267,11 @@ func _reset_footstep_tracking():
 func _handle_attack():
 	if Input.is_action_just_pressed("attack"):
 		weapon_handler.attack(self, facing_direction)
+
+func move_to(target: Vector2) -> void:
+	while global_position.distance_to(target) > 2:
+		velocity = (target - global_position).normalized() * speed
+		move_and_slide()
+		await get_tree().physics_frame
+		
+	velocity = Vector2.ZERO
