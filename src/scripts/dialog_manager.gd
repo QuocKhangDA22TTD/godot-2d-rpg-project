@@ -4,6 +4,8 @@ var npc: Node = null
 
 @onready var dialog_ui = $DialogUI
 
+signal dialog_finished  # Signal mới để thông báo dialog kết thúc
+
 func show_dialog(npc, text = "", options = {}):
 	AudioManager.play_sfx("open_dialog")
 	if text != "":
@@ -20,21 +22,29 @@ func show_dialog(npc, text = "", options = {}):
 			dialog_ui.show_dialog(npc.npc_name, dialog["text"], dialog["options"])
 
 func hide_dialog():
+	print("[DialogManager] Hiding dialog and emitting dialog_finished signal")
 	dialog_ui.hide_dialog()
+	dialog_finished.emit()  # Emit signal khi dialog kết thúc
 
 func handle_dialog_choice(option):
+	print("[DialogManager] Handle choice: ", option)
 	var current_dialog = npc.get_current_dialog()
 	if current_dialog == null:
+		print("[DialogManager] Current dialog is null!")
 		return
 	
+	print("[DialogManager] Current dialog: ", current_dialog)
 	var next_state = current_dialog["options"].get(option, "start")
+	print("[DialogManager] Next state: ", next_state)
 	npc.set_dialog_state(next_state)
 	
 	if next_state == "end":
+		print("[DialogManager] Dialog ending - moving to next branch")
 		if npc.current_branch_index < npc.dialog_resource.get_npc_dialog(npc.npc_id).size() - 1:
 			npc.set_dialog_tree(npc.current_branch_index + 1)
 		hide_dialog()
 	elif next_state == "exit":
+		print("[DialogManager] Dialog exiting")
 		npc.set_dialog_state("start")
 		hide_dialog()
 	elif next_state == "give_quest":
@@ -47,6 +57,7 @@ func handle_dialog_choice(option):
 		buy_health_potion()
 		show_dialog(npc)
 	else:
+		print("[DialogManager] Continuing dialog with state: ", next_state)
 		show_dialog(npc)
 
 func offer_quests(branch_id: String):

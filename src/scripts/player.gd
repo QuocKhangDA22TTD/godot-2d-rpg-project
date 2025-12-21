@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 var speed = 60.0
-var health = 5.0
+var health = 30.0
 var max_health = 5.0
 
 #var is_open_inventory = false # Để đây một thời gian xem có chuyện gì xảy ra không, nếu không có thì bỏ dòng này

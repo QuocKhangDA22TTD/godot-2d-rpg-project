@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=4 uid="uid://c4nfx1yyjrd7i"]
+[gd_scene load_steps=12 format=4 uid="uid://c4nfx1yyjrd7i"]
 
 [ext_resource type="Script" uid="uid://dunnmkssq458r" path="res://scripts/level_1.gd" id="1_fmjld"]
 [ext_resource type="Texture2D" uid="uid://bq2pg8sd2yng7" path="res://assets/tilesheets/tilesheet.png" id="1_qvs5h"]
 [ext_resource type="Shader" uid="uid://0ovxj2iero3c" path="res://shader/level_1.gdshader" id="2_vey02"]
 [ext_resource type="PackedScene" uid="uid://cf4nk3tfp6p0n" path="res://scenes/entity/door.tscn" id="3_fmjld"]
 [ext_resource type="PackedScene" uid="uid://liycm3ocnyf3" path="res://scenes/enemy/coal_monster.tscn" id="4_gdio5"]
+[ext_resource type="PackedScene" uid="uid://dhp7g8brc1m6r" path="res://scenes/enemy/golem.tscn" id="6_xbykm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xbykm"]
 shader = ExtResource("2_vey02")
@@ -98,5 +99,17 @@ position = Vector2(99, 181)
 
 [node name="CoalMonster4" parent="." instance=ExtResource("4_gdio5")]
 position = Vector2(171, 180)
+
+[node name="Golem" parent="." instance=ExtResource("6_xbykm")]
+position = Vector2(691, 141)
+
+[node name="Golem2" parent="." instance=ExtResource("6_xbykm")]
+position = Vector2(684, 193)
+
+[node name="Golem3" parent="." instance=ExtResource("6_xbykm")]
+position = Vector2(732, 167)
+
+[node name="Golem4" parent="." instance=ExtResource("6_xbykm")]
+position = Vector2(732, 118)
 
 [editable path="Doors/Door_Mine"]

@@ -15,35 +15,42 @@
 						"state": "Giới thiệu bản thân",
 						"text": "Bạn đã chọn đúng nơi đến, tôi là trưởng làng của ngôi làng này, đây là ngôi làng được nhiều mạo hiểm giả chọn để bắt đầu cuộc phiêu lưu!",
 						"options": {
-							"Tiếp theo": "Chỉ chỗ trọ"
+							"Tiếp theo": "exit"
 						}
 					},
 					{
 						"state": "hướng dẫn bản đồ",
 						"text": "Để tôi dẫn bạn đi thăm quan ngôi làng",
 						"options": {
-							"Tiếp theo": "Nhà trọ"
+							"Tiếp theo": "exit"
 						}
 					},
 					{
 						"state": "Nhà trọ",
 						"text": "Từ cửa làng đi về hướng nam, sẽ là nơi cho thuê trọ.",
 						"options": {
-							"Tiếp theo": "Hầm ngục"
+							"Tiếp theo": "exit"
 						}
 					},
 					{
 						"state": "Hầm ngục",
+						"text": "Phía đông bắc ngôi làng là lối vào hầm ngục, nơi có rất nhiều quái vật và kho báu đang chờ đợi các mạo hiểm giả dũng cảm.",
+						"options": {
+							"Tiếp theo": "exit"
+						}
+					},
+					{
+						"state": "Khu mua bán",
 						"text": "Các vật phẩm bạn kiếm được có thể dùng để trao đổi và buôn bán tại các gian hàng ở phía đông nam ngôi làng.",
 						"options": {
-							"Tiếp theo": "Tạm biệt"
+							"Tiếp theo": "exit"
 						}
 					},
 					{
 						"state": "Tạm biệt",
 						"text": "Đây là tất cả những gì tôi giới thiệu, nếu bạn có vấn đề gì thì cứ đến gặp tôi ở nhà trưởng làng.",
 						"options": {
-							"Tiếp theo": "Lời kết"
+							"Tiếp theo": "exit"
 						}
 					},
 					{
@@ -62,7 +69,7 @@
 						"state": "Nói về căn phòng",
 						"text": "Đây là căn phòng thường dành cho mạo hiểm giả như cậu",
 						"options": {}
-					},
+					}
 				]
 			},
 			{

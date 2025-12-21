@@ -439,7 +439,7 @@ y_sort_enabled = true
 position = Vector2(1432, 722)
 
 [node name="Seller" parent="NPCs" instance=ExtResource("8_tp1qk")]
-position = Vector2(1435, 808)
+position = Vector2(1016, 1084)
 
 [node name="VillageChief" parent="NPCs" instance=ExtResource("9_vrayl")]
 position = Vector2(1401, 737)

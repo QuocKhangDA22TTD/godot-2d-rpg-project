@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 var health = 10.0
 var speed = 50.0
-var damage = 1.0
+var damage = 5.0
 
 var knockback_force: Vector2 = Vector2.ZERO
 var knockback_timer = 0.0

@@ -1,0 +1,90 @@
+[gd_scene load_steps=14 format=3 uid="uid://dhp7g8brc1m6r"]
+
+[ext_resource type="Texture2D" uid="uid://d248jy2ybfib6" path="res://assets/sprites/golem_idle.png" id="1_j3s7c"]
+[ext_resource type="Script" uid="uid://8my6007e056l" path="res://scripts/golem.gd" id="1_peps4"]
+[ext_resource type="Texture2D" uid="uid://ddnxp32k3ncc5" path="res://assets/sprites/golem_run.png" id="2_peps4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_peps4"]
+atlas = ExtResource("1_j3s7c")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qm7f8"]
+atlas = ExtResource("1_j3s7c")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r3b7n"]
+atlas = ExtResource("1_j3s7c")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t5qhw"]
+atlas = ExtResource("1_j3s7c")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vd8h4"]
+atlas = ExtResource("2_peps4")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r18mx"]
+atlas = ExtResource("2_peps4")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cxfon"]
+atlas = ExtResource("2_peps4")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ci1i"]
+atlas = ExtResource("2_peps4")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_momrh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_peps4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qm7f8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r3b7n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t5qhw")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vd8h4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r18mx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cxfon")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2ci1i")
+}],
+"loop": true,
+"name": &"run",
+"speed": 6.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_iocpu"]
+radius = 6.0
+
+[node name="Golem" type="CharacterBody2D"]
+script = ExtResource("1_peps4")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_momrh")
+animation = &"run"
+frame_progress = 0.510507
+offset = Vector2(0, -12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5)
+shape = SubResource("CircleShape2D_iocpu")
