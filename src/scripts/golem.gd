@@ -1,376 +1,253 @@
 extends CharacterBody2D
 
-# Basic stats
-var max_health = 80.0
-var health = 80.0
-var base_speed = 25.0
-var contact_damage = 4.0
-var armor_reduction = 0.25  # Giảm 25% damage
+var health = 12.0
+var speed = 50.0
+var chase_speed = 60.0  # Tốc độ khi truy đuổi
+var damage = 2.0
 
-# Movement and detection
-var detection_radius = 120.0
-var attack_radius = 50.0
-var player_target = null
-var move_speed = 0.0
+var knockback_force: Vector2 = Vector2.ZERO
+var knockback_timer = 0.0
+var knockback_duration = 0.05
 
-# Attack system
-var slam_cooldown = 4.0
-var slam_timer = 0.0
-var slam_charge_time = 1.5
-var slam_damage = 8.0
-var slam_range = 70.0
+# Contact damage cooldown
+var damage_cooldown = 1.0  # 1 giây cooldown
+var damage_timer = 0.0
 
-# State management
-enum GolemState { IDLE, PATROL, CHASE, CHARGE_ATTACK, SLAM, STUNNED }
-var current_state = GolemState.IDLE
-var state_timer = 0.0
+# Detection and attack ranges
+var detection_range = 80.0  # Khoảng cách phát hiện player
+var attack_range = 30.0     # Khoảng cách tấn công (contact damage)
 
-# Patrol behavior
-var patrol_points = []
-var current_patrol_target = 0
-var patrol_wait_time = 2.0
+# Random movement
+var wander_timer = 0.0
+var wander_duration = 2.0  # Thời gian di chuyển ngẫu nhiên
+var wander_direction = Vector2.ZERO
 
-# Knockback
-var knockback_velocity = Vector2.ZERO
-var knockback_force = Vector2.ZERO  # Để tương thích với attack_hitbox.gd
-var knockback_decay = 800.0
+# States
+enum State { WANDERING, CHASING }
+var current_state = State.WANDERING
 
-# Animation and visuals
-var sprite_node = null
-var animation_player = null
 var is_dead = false
+var _death_timer = null
+var _anim_finished_connected := false
+var _freeing = false
+
+@onready var anim = $AnimatedSprite2D
+@onready var anima_player = $AnimatedSprite2D/AnimationPlayer
 
 func _ready():
-	# Safely get animation nodes
-	if has_node("AnimatedSprite2D"):
-		sprite_node = $AnimatedSprite2D
-	if has_node("AnimationPlayer"):
-		animation_player = $AnimationPlayer
+	anim.play("run")
 	
-	# Setup patrol points around spawn
-	setup_patrol_points()
+	# Setup hit flash shader
+	setup_hit_flash()
 	
-	# Add to enemy group
-	add_to_group("Enemy")
-	
-	# Start in idle state
-	change_state(GolemState.IDLE)
-	
-	print("[Golem] Initialized with health: ", health)
+	# Check if Area2D exists
+	if has_node("Area2D"):
+		print("[Golem] Area2D found - contact damage enabled")
+	else:
+		print("[Golem] WARNING: Area2D not found - contact damage disabled!")
 
-func setup_patrol_points():
-	"""Tạo các điểm tuần tra xung quanh vị trí spawn"""
-	var spawn_pos = global_position
-	patrol_points = [
-		spawn_pos + Vector2(60, 0),
-		spawn_pos + Vector2(0, 60),
-		spawn_pos + Vector2(-60, 0),
-		spawn_pos + Vector2(0, -60),
-		spawn_pos  # Quay về điểm gốc
-	]
+func setup_hit_flash():
+	"""Setup hit flash shader cho sprite"""
+	if anim and anim.material == null:
+		var shader_material = ShaderMaterial.new()
+		shader_material.shader = preload("res://shader/hit_flash.gdshader")
+		anim.material = shader_material
 
-func _physics_process(delta):
+func _physics_process(delta: float) -> void:
 	if is_dead:
+		return
+		
+	# Handle knockback first
+	if knockback_timer > 0:
+		handle_knockback(delta)
+		knockback_force.move_toward(Vector2.ZERO, delta)
+		move_and_slide()
 		return
 	
 	# Update timers
-	state_timer += delta
-	slam_timer -= delta
+	wander_timer -= delta
+	damage_timer -= delta
 	
-	# Handle knockback
-	if knockback_velocity.length() > 0 or knockback_force.length() > 0:
-		# Sử dụng knockback_force nếu có (từ attack_hitbox), nếu không dùng knockback_velocity
-		if knockback_force.length() > 0:
-			velocity = knockback_force
-			knockback_force = knockback_force.move_toward(Vector2.ZERO, knockback_decay * delta)
-		else:
-			velocity = knockback_velocity
-			knockback_velocity = knockback_velocity.move_toward(Vector2.ZERO, knockback_decay * delta)
-	else:
-		# Normal movement
-		update_state_behavior(delta)
-	
-	# Apply movement
+	# State machine
+	update_ai_state(delta)
 	move_and_slide()
 	
-	# Update sprite direction
-	update_sprite_direction()
+	# Check for contact damage (fallback if Area2D doesn't work)
+	check_contact_damage()
 
-func update_state_behavior(delta):
-	"""Cập nhật hành vi theo state hiện tại"""
+func handle_knockback(delta: float):
+	if knockback_timer > 0:
+		velocity = knockback_force
+		knockback_timer -= delta
+
+func update_ai_state(delta: float):
+	if not Global.player:
+		wander_randomly()
+		return
+	
+	var distance_to_player = global_position.distance_to(Global.player.global_position)
+	
 	match current_state:
-		GolemState.IDLE:
-			handle_idle_state()
+		State.WANDERING:
+			handle_wandering_state(distance_to_player)
 		
-		GolemState.PATROL:
-			handle_patrol_state()
-		
-		GolemState.CHASE:
-			handle_chase_state()
-		
-		GolemState.CHARGE_ATTACK:
-			handle_charge_attack_state()
-		
-		GolemState.SLAM:
-			handle_slam_state()
-		
-		GolemState.STUNNED:
-			handle_stunned_state()
+		State.CHASING:
+			handle_chasing_state(distance_to_player)
 
-func handle_idle_state():
-	"""Trạng thái đứng yên, quan sát"""
-	velocity = Vector2.ZERO
-	
-	# Tìm player
-	find_player()
-	
-	if player_target and is_player_in_detection_range():
-		change_state(GolemState.CHASE)
-	elif state_timer > patrol_wait_time:
-		change_state(GolemState.PATROL)
+func handle_wandering_state(distance_to_player: float):
+	if distance_to_player <= detection_range:
+		# Player vào tầm phát hiện, chuyển sang truy đuổi
+		current_state = State.CHASING
+		print("[Golem] Player detected! Switching to CHASING")
+	else:
+		# Di chuyển ngẫu nhiên
+		wander_randomly()
 
-func handle_patrol_state():
-	"""Tuần tra giữa các điểm"""
-	if patrol_points.size() == 0:
-		change_state(GolemState.IDLE)
+func handle_chasing_state(distance_to_player: float):
+	if distance_to_player > detection_range * 1.2:  # Thêm hysteresis để tránh flicker
+		# Player ra khỏi tầm phát hiện, quay về wandering
+		current_state = State.WANDERING
+		print("[Golem] Lost player! Switching to WANDERING")
+	else:
+		# Tiếp tục truy đuổi với tốc độ cao
+		chase_player()
+
+func wander_randomly():
+	if wander_timer <= 0:
+		# Tạo hướng di chuyển ngẫu nhiên mới
+		var angle = randf() * TAU  # TAU = 2 * PI
+		wander_direction = Vector2(cos(angle), sin(angle))
+		wander_timer = wander_duration
+	
+	velocity = wander_direction * speed * 0.3  # Di chuyển chậm hơn khi wander
+
+func chase_player():
+	if Global.player:
+		var dir = (Global.player.global_position - global_position).normalized()
+		velocity = dir * chase_speed  # Sử dụng tốc độ truy đuổi cao hơn
+
+func get_damaged(amount: float):
+	# Ignore further damage if already dead (prevents repeated drops)
+	if is_dead:
 		return
-	
-	var target_point = patrol_points[current_patrol_target]
-	var direction = (target_point - global_position).normalized()
-	
-	velocity = direction * base_speed * 0.6  # Chậm khi patrol
-	
-	# Kiểm tra đã đến điểm chưa
-	if global_position.distance_to(target_point) < 20:
-		current_patrol_target = (current_patrol_target + 1) % patrol_points.size()
-		change_state(GolemState.IDLE)
-	
-	# Tìm player trong lúc patrol
-	find_player()
-	if player_target and is_player_in_detection_range():
-		change_state(GolemState.CHASE)
 
-func handle_chase_state():
-	"""Truy đuổi player"""
-	if not player_target or not is_instance_valid(player_target):
-		change_state(GolemState.IDLE)
-		return
+	# Play hit sound
+	AudioManager.play_sfx("hit")
 	
-	var distance = global_position.distance_to(player_target.global_position)
+	# Play hit flash effect
+	play_hit_flash()
 	
-	# Mất player
-	if distance > detection_radius * 1.2:
-		player_target = null
-		change_state(GolemState.PATROL)
-		return
+	# Play hit animation if available
+	if anima_player:
+		anima_player.play("hit")
 	
-	# Trong tầm tấn công
-	if distance <= attack_radius and slam_timer <= 0:
-		change_state(GolemState.CHARGE_ATTACK)
-		return
-	
-	# Di chuyển về phía player
-	var direction = (player_target.global_position - global_position).normalized()
-	velocity = direction * base_speed
+	knockback_timer = knockback_duration
+	health -= amount
 
-func handle_charge_attack_state():
-	"""Chuẩn bị tấn công slam"""
-	velocity = Vector2.ZERO  # Đứng yên khi charge
-	
-	if state_timer >= slam_charge_time:
-		execute_slam_attack()
-		change_state(GolemState.SLAM)
+	if health <= 0.0:
+		# Mark dead early to prevent re-entry
+		is_dead = true
 
-func handle_slam_state():
-	"""Thực hiện slam attack"""
-	velocity = Vector2.ZERO
-	
-	if state_timer >= 0.8:  # Thời gian slam
-		slam_timer = slam_cooldown
-		change_state(GolemState.STUNNED)
+		# Stop movement/AI completely
+		velocity = Vector2.ZERO
+		knockback_timer = 0.0
+		current_state = State.WANDERING  # Reset state
+		set_physics_process(false)
 
-func handle_stunned_state():
-	"""Bị choáng sau khi slam"""
-	velocity = Vector2.ZERO
-	
-	if state_timer >= 1.0:  # Thời gian choáng
-		change_state(GolemState.CHASE)
+		# Disable collisions/interactions so it can't attack or be hit
+		collision_layer = 0
+		collision_mask = 0
+		if has_node("Area2D"):
+			$Area2D.monitoring = false
 
-func execute_slam_attack():
-	"""Thực hiện đòn slam và gây damage"""
-	print("[Golem] Executing slam attack!")
+		# Spawn loot once
+		drop_loot()
+
+		# Play death animation and wait for animation_finished (with fallback timer)
+		if anim and anim.sprite_frames and anim.sprite_frames.has_animation("dead"):
+			# Connect to animation_finished once
+			if not _anim_finished_connected:
+				if anim.is_connected("animation_finished", Callable(self, "_on_anim_finished")):
+					anim.disconnect("animation_finished", Callable(self, "_on_anim_finished"))
+				anim.connect("animation_finished", Callable(self, "_on_anim_finished"))
+				_anim_finished_connected = true
+			anim.play("dead")
+			# Fallback timer: free after 1.0s if animation_finished signal doesn't fire
+			if _death_timer == null:
+				_death_timer = Timer.new()
+				_death_timer.one_shot = true
+				_death_timer.wait_time = 1.0
+				add_child(_death_timer)
+				_death_timer.start()
+				_death_timer.connect("timeout", Callable(self, "_on_anim_finished"))
+		else:
+			# fallback: no sprite frames available, free immediately
+			queue_free()
+
+func drop_loot():
+	# Random drop: 25% drop 3 than đá
+	var drop_chance = randf()
 	
-	if player_target and is_instance_valid(player_target):
-		var distance = global_position.distance_to(player_target.global_position)
+	if drop_chance < 0.25:
+		# 25% drop 3 than đá
+		var items_texture = preload("res://assets/sprites/items.png")
+		var atlas_texture = AtlasTexture.new()
+		atlas_texture.atlas = items_texture
+		atlas_texture.region = Rect2(24, 0, 24, 24)  # Region của than đá
 		
-		if distance <= slam_range:
-			# Gây damage cho player
-			if player_target.has_method("take_damaged"):
-				player_target.take_damaged(slam_damage)
-			
+		var item_to_drop = {
+			"item_type": "Vật liệu",
+			"item_name": "Than đá",
+			"item_texture": atlas_texture,
+			"item_effect": "",
+			"quantity": 3
+		}
+		
+		Global.drop_item(item_to_drop, global_position, get_parent())
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body.name == "Player":
+		Global.player.take_damaged(damage)
+
+func check_contact_damage():
+	"""Kiểm tra va chạm trực tiếp với player (fallback nếu Area2D không hoạt động)"""
+	if Global.player and not is_dead and damage_timer <= 0:
+		var distance = global_position.distance_to(Global.player.global_position)
+		if distance < 25.0:  # Khoảng cách va chạm
+			Global.player.take_damaged(damage)
+			damage_timer = damage_cooldown  # Reset cooldown
+			print("[Golem] Contact damage to player: ", damage)
 			# Knockback player
-			var knockback_dir = (player_target.global_position - global_position).normalized()
-			if player_target.has_method("apply_knockback"):
-				player_target.apply_knockback(knockback_dir * 400)
-			
-			print("[Golem] Slam hit player for ", slam_damage, " damage!")
+			var knockback_dir = (Global.player.global_position - global_position).normalized()
+			Global.player.velocity += knockback_dir * 200  # Đẩy player ra xa
 
-func find_player():
-	"""Tìm player trong game"""
-	if Global.player and is_instance_valid(Global.player):
-		player_target = Global.player
-
-func is_player_in_detection_range() -> bool:
-	"""Kiểm tra player có trong tầm phát hiện không"""
-	if not player_target:
-		return false
-	
-	return global_position.distance_to(player_target.global_position) <= detection_radius
-
-func change_state(new_state: GolemState):
-	"""Thay đổi state và reset timer"""
-	current_state = new_state
-	state_timer = 0.0
-	
-	# Update animation based on state
-	update_animation_for_state(new_state)
-	
-	print("[Golem] State changed to: ", GolemState.keys()[new_state])
-
-func update_animation_for_state(state: GolemState):
-	"""Cập nhật animation theo state"""
-	if not sprite_node:
+func _on_anim_finished() -> void:
+	# Called either from AnimatedSprite2D.animation_finished or fallback timer
+	if not is_inside_tree():
 		return
-	
-	match state:
-		GolemState.IDLE, GolemState.STUNNED:
-			play_animation("idle")
-		
-		GolemState.PATROL, GolemState.CHASE:
-			play_animation("run")
-		
-		GolemState.CHARGE_ATTACK:
-			play_animation("idle")  # Có thể thay bằng "charge" nếu có
-		
-		GolemState.SLAM:
-			play_animation("idle")  # Có thể thay bằng "attack" nếu có
-
-func play_animation(anim_name: String):
-	"""Safely play animation"""
-	if sprite_node and sprite_node.has_method("play"):
-		if sprite_node.sprite_frames and sprite_node.sprite_frames.has_animation(anim_name):
-			sprite_node.play(anim_name)
-
-func update_sprite_direction():
-	"""Cập nhật hướng sprite theo movement"""
-	if not sprite_node:
+	# Avoid double-handling if multiple signals fire (timer + animation)
+	if _freeing:
 		return
-	
-	if velocity.x < -5:
-		sprite_node.flip_h = true
-	elif velocity.x > 5:
-		sprite_node.flip_h = false
+	_freeing = true
+	# Disconnect signals and stop fallback timer
+	if _anim_finished_connected and anim.is_connected("animation_finished", Callable(self, "_on_anim_finished")):
+		anim.disconnect("animation_finished", Callable(self, "_on_anim_finished"))
+		_anim_finished_connected = false
+	if _death_timer != null and _death_timer.is_connected("timeout", Callable(self, "_on_anim_finished")):
+		_death_timer.stop()
+		_death_timer.queue_free()
+		_death_timer = null
 
-func get_damaged(damage_amount: float):
-	"""Nhận damage với armor reduction"""
-	if is_dead:
-		return
-	
-	# Áp dụng armor
-	var actual_damage = damage_amount * (1.0 - armor_reduction)
-	health -= actual_damage
-	
-	print("[Golem] Took ", actual_damage, " damage. Health: ", health, "/", max_health)
-	
-	# Interrupt attack nếu đang charge
-	if current_state == GolemState.CHARGE_ATTACK:
-		change_state(GolemState.CHASE)
-		slam_timer = slam_cooldown * 0.3  # Giảm cooldown một chút
-	
-	# Play hit animation
-	if animation_player and animation_player.has_method("play"):
-		animation_player.play("hit")
-	
-	# Knockback
-	if player_target:
-		var knockback_dir = (global_position - player_target.global_position).normalized()
-		knockback_velocity = knockback_dir * 150
-		knockback_force = Vector2.ZERO  # Reset knockback_force
-	
-	# Check death
-	if health <= 0:
-		die()
-
-func die():
-	"""Xử lý khi golem chết"""
-	if is_dead:
-		return
-	
-	is_dead = true
-	print("[Golem] Died!")
-	
-	# Stop all movement
-	velocity = Vector2.ZERO
-	knockback_velocity = Vector2.ZERO
-	knockback_force = Vector2.ZERO
-	
-	# Disable physics
-	set_physics_process(false)
-	
-	# Disable collision
-	collision_layer = 0
-	collision_mask = 0
-	
-	# Drop loot
-	drop_valuable_loot()
-	
-	# Play death animation and cleanup
-	play_animation("idle")  # Fallback animation
-	
-	# Auto cleanup after delay
-	await get_tree().create_timer(2.0).timeout
+	# final cleanup
 	queue_free()
-
-func drop_valuable_loot():
-	"""Drop loot có giá trị cao"""
-	var items_texture = preload("res://assets/sprites/items.png")
-	
-	# Drop multiple items
-	for i in range(2):  # Drop 2 items
-		var item_to_drop = {}
+func play_hit_flash():
+	"""Phát hiệu ứng hit flash"""
+	if anim and anim.material:
+		# Bật hit flash
+		anim.material.set_shader_parameter("hit_flash_on", true)
+		anim.material.set_shader_parameter("hit_flash_color", Color.WHITE)
 		
-		if randf() < 0.6:  # 60% bình máu
-			var atlas_texture = AtlasTexture.new()
-			atlas_texture.atlas = items_texture
-			atlas_texture.region = Rect2(0, 0, 24, 24)
-			
-			item_to_drop = {
-				"item_type": "Tiêu hao",
-				"item_name": "Bình máu",
-				"item_texture": atlas_texture,
-				"item_effect": "heal",
-				"quantity": 1
-			}
-		else:  # 40% than đá
-			var atlas_texture = AtlasTexture.new()
-			atlas_texture.atlas = items_texture
-			atlas_texture.region = Rect2(24, 0, 24, 24)
-			
-			item_to_drop = {
-				"item_type": "Vật liệu",
-				"item_name": "Than đá",
-				"item_texture": atlas_texture,
-				"item_effect": "",
-				"quantity": 2
-			}
-		
-		# Drop với offset để không chồng lên nhau
-		var drop_pos = global_position + Vector2(randf_range(-20, 20), randf_range(-20, 20))
-		Global.drop_item(item_to_drop, drop_pos, get_parent())
-
-func _on_area_2d_body_entered(body: Node2D):
-	"""Xử lý va chạm với player"""
-	if body.name == "Player" and not is_dead:
-		if body.has_method("take_damaged"):
-			body.take_damaged(contact_damage)
-			print("[Golem] Contact damage to player: ", contact_damage)
+		# Tắt sau 0.1 giây
+		await get_tree().create_timer(0.1).timeout
+		if anim and anim.material:
+			anim.material.set_shader_parameter("hit_flash_on", false)

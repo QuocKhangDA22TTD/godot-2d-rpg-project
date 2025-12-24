@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 var health = 10.0
 var speed = 50.0
-var damage = 5.0
+var damage = 1.0
 
 var knockback_force: Vector2 = Vector2.ZERO
 var knockback_timer = 0.0
@@ -43,6 +43,16 @@ var _freeing = false
 
 func _ready():
 	anim.play("run")
+	
+	# Setup hit flash shader
+	setup_hit_flash()
+
+func setup_hit_flash():
+	"""Setup hit flash shader cho sprite"""
+	if anim and anim.material == null:
+		var shader_material = ShaderMaterial.new()
+		shader_material.shader = preload("res://shader/hit_flash.gdshader")
+		anim.material = shader_material
 
 func _physics_process(delta: float) -> void:
 	if is_dead:
@@ -169,6 +179,12 @@ func get_damaged(amount: float):
 		attack_timer = attack_cooldown * 0.5  # Giảm thời gian hồi chiêu một chút
 		print("[CoalMonster] Attack interrupted by damage!")
 
+	# Play hit sound
+	AudioManager.play_sfx("hit")
+	
+	# Play hit flash effect
+	play_hit_flash()
+	
 	anima_player.play("hit")
 	knockback_timer = knockback_duration
 	health -= amount
@@ -226,43 +242,25 @@ func dash_to_player():
 	dash_timer = dash_duration
 
 func drop_loot():
-	# Random drop: 70% than đá, 30% bình máu
+	# Random drop: 50% than đá
 	var drop_chance = randf()
-	var item_to_drop = {}
 	
-	# Tạo AtlasTexture cho items.png
-	var items_texture = preload("res://assets/sprites/items.png")
-	
-	if drop_chance < 0.7:
-		# 70% drop than đá
+	if drop_chance < 0.5:
+		# 50% drop than đá
+		var items_texture = preload("res://assets/sprites/items.png")
 		var atlas_texture = AtlasTexture.new()
 		atlas_texture.atlas = items_texture
 		atlas_texture.region = Rect2(24, 0, 24, 24)  # Region của than đá
 		
-		item_to_drop = {
+		var item_to_drop = {
 			"item_type": "Vật liệu",
 			"item_name": "Than đá",
 			"item_texture": atlas_texture,
 			"item_effect": "",
 			"quantity": 1
 		}
-		# drop than
-	else:
-		# 30% drop bình máu
-		var atlas_texture = AtlasTexture.new()
-		atlas_texture.atlas = items_texture
-		atlas_texture.region = Rect2(0, 0, 24, 24)  # Region của bình máu
 		
-		item_to_drop = {
-			"item_type": "Tiêu hao",
-			"item_name": "Bình máu",
-			"item_texture": atlas_texture,
-			"item_effect": "heal",
-			"quantity": 1
-		}
-		# drop heal
-	
-	Global.drop_item(item_to_drop, global_position, get_parent())
+		Global.drop_item(item_to_drop, global_position, get_parent())
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.name == "Player":
@@ -288,3 +286,14 @@ func _on_anim_finished() -> void:
 
 	# final cleanup
 	queue_free()
+func play_hit_flash():
+	"""Phát hiệu ứng hit flash"""
+	if anim and anim.material:
+		# Bật hit flash
+		anim.material.set_shader_parameter("hit_flash_on", true)
+		anim.material.set_shader_parameter("hit_flash_color", Color.WHITE)
+		
+		# Tắt sau 0.1 giây
+		await get_tree().create_timer(0.1).timeout
+		if anim and anim.material:
+			anim.material.set_shader_parameter("hit_flash_on", false)

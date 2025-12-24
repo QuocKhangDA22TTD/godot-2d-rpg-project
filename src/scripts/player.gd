@@ -147,6 +147,10 @@ func apply_item_effect (item):
 	GameManager.save_player_positon()  # Lưu health mới
 
 func _input(event: InputEvent) -> void:
+	# Chặn tất cả input khi đang trong cutscene
+	if GameManager.state == GameManager.GameState.CUTSCENE:
+		return
+	
 	if event.is_action_pressed("inventory") and !PauseMenu.visible:
 		inventory_ui.visible = !inventory_ui.visible
 		Global.inventory_updated.emit()
@@ -156,13 +160,19 @@ func _input(event: InputEvent) -> void:
 		if event.is_action_pressed("talk"):
 			var target = ray_cast_2d.get_collider()
 			if target != null:
+				print("[Player] Talk pressed - target: ", target.name if target else "null", ", can_move: ", can_move, ", GameManager.state: ", GameManager.state)
 				if target.is_in_group("NPC"):
 					can_move = false
+					print("[Player] Starting dialog with NPC: ", target.npc_id if "npc_id" in target else "unknown")
 					target.start_dialog()
 					check_quest_objectives(target.npc_id, "talk_to")
 				elif target.is_in_group("Items"):
 					# Gọi pickup_item từ inventory_item.gd để xử lý
 					target.get_parent().pickup_item()
+			else:
+				print("[Player] Talk pressed but no target detected - can_move: ", can_move, ", GameManager.state: ", GameManager.state)
+	else:
+		print("[Player] Talk pressed but can_move is false - GameManager.state: ", GameManager.state)
 	
 	if event.is_action_pressed("quest"):
 		quest_manager.show_hide_log()

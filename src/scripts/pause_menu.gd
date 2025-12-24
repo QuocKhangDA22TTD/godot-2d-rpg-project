@@ -3,6 +3,10 @@ extends CanvasLayer
 @onready var option_ui = $OptionUI
 
 func _input(event: InputEvent):
+	# Chặn pause menu khi đang trong cutscene
+	if GameManager.state == GameManager.GameState.CUTSCENE:
+		return
+	
 	await get_tree().create_timer(0.05).timeout
 	if get_tree().current_scene.name != "MainMenu":
 		if event.is_action_pressed("esc"):

@@ -28,7 +28,7 @@ metadata/_custom_type_script = "uid://cxicp0dg6wvkk"
 [sub_resource type="Resource" id="Resource_p0u3l"]
 script = ExtResource("5_lr645")
 reward_type = "coins"
-reward_amount = 3
+reward_amount = 30
 metadata/_custom_type_script = "uid://cbtad53lfxej5"
 
 [sub_resource type="Resource" id="Resource_s061t"]

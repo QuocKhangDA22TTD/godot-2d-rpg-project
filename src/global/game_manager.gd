@@ -263,7 +263,8 @@ func reset_all_game_data():
 	var save_files = [
 		"user://savegame.save",
 		"user://inventory.save", 
-		"user://quests.save"
+		"user://quests.save",
+		"user://cutscenes.save"  # Thêm cutscene save file
 	]
 	
 	for file_path in save_files:
@@ -283,6 +284,10 @@ func reset_all_game_data():
 	
 	# Reset game manager state
 	game_over = false
+	
+	# Reset cutscene state
+	if CutsceneManager:
+		CutsceneManager.reset_cutscene_state()
 	
 	# Tạo dữ liệu player mặc định
 	var default_player_data = {

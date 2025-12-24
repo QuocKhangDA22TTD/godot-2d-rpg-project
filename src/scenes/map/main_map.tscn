@@ -442,7 +442,7 @@ position = Vector2(1432, 722)
 position = Vector2(1016, 1084)
 
 [node name="VillageChief" parent="NPCs" instance=ExtResource("9_vrayl")]
-position = Vector2(1401, 737)
+position = Vector2(1261, 725)
 
 [editable path="Doors/Door_Village"]
 [editable path="Doors/Door_Start"]

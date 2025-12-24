@@ -14,9 +14,11 @@ func _ready():
 	load_saved_quests()
 
 func add_quest(quest: Quest):
+	print("[QuestManager] Adding quest: ", quest.quest_name, " (", quest.quest_id, ") with state: ", quest.state)
 	quests[quest.quest_id] = quest
 	quest_updated.emit(quest.quest_id)
 	save_quests()  # Tự động lưu khi thêm quest
+	print("[QuestManager] Quest added successfully. Total quests: ", quests.size())
 
 func remove_quest(quest_id: String):
 	quests.erase(quest_id)
@@ -34,8 +36,8 @@ func update_quest(quest_id: String, state: String):
 		quest_updated.emit(quest_id)
 		if state == "completed":
 			if quest.is_repeatable:
-				# Nếu quest có thể lặp lại - reset nó để người chơi có thể nhận lại
-				quest.reset_quest()
+				# Nếu quest có thể lặp lại - giữ nguyên state "completed" để NPC có thể reset khi cần
+				print("[QuestManager] Quest ", quest_id, " completed and is repeatable")
 				save_quests()
 			else:
 				# Nếu không lặp lại - xóa quest
@@ -46,9 +48,13 @@ func update_quest(quest_id: String, state: String):
 func get_active_quests() -> Array:
 	var active_quests = []
 	
+	print("[QuestManager] Getting active quests. Total quests: ", quests.size())
 	for quest in quests.values():
+		print("[QuestManager] Quest: ", quest.quest_name, " - State: ", quest.state)
 		if quest.state == "in_progress":
 			active_quests.append(quest)
+	
+	print("[QuestManager] Found ", active_quests.size(), " active quests")
 	return active_quests
 
 func complete_objective(quest_id: String, objective_id: String):
